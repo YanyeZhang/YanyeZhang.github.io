@@ -193,7 +193,23 @@
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <p>这是<strong>新的开始</strong>，我用hexo创建了第一篇文章。</p>
+        <script src="/assets/js/APlayer.min.js"> </script><div id="aplayer0" class="aplayer" style="margin-bottom: 20px;"></div>
+		<script>
+			var ap = new APlayer({
+				element: document.getElementById("aplayer0"),
+				narrow: false,
+				autoplay: false,
+				showlrc: 0,
+				music: {
+					title: "她的睫毛",
+					author: "走川",
+					url: "http://qiniuuwmp3.changba.com/897645292.mp3",
+					pic: "http://aliimg.changba.com/cache/photo/786245580_200_200.jpg",
+				}
+			});
+			window.aplayers || (window.aplayers = []);
+			window.aplayers.push(ap);
+		</script>
 <p>通过下面的命令，就可以创建新文章<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">D:\workspace\javascript\nodejs-hexo&gt;hexo <span class="keyword">new</span> 新的开始</span><br><span class="line">[info] File created at D:\workspace\javascript\nodejs-hexo\source\_posts\新的开始.md</span><br></pre></td></tr></table></figure></p>
 <p>感觉非常好。</p>
 
