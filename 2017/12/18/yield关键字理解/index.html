@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
     <title>
         
-        走川博客
+        理解关键字—yield · 走川博客
         
     </title>
     <link rel="icon" href= /assests/favicon.ico>
@@ -60,11 +60,22 @@
     
 </head>
     
+        <body class="post-body">
+    
     
 <header class="header">
 
     <div class="header-sidebar-menu">&#xe775;</div>
     <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >YY&#39;s Studio.</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">理解关键字—yield</a>
+            </div>
+    </div>
     
     <a class="home-link" href=/>YY's Studio.</a>
 </header>
@@ -72,21 +83,43 @@
         <div class="site-intro">
     
     <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
             
-    <div class="site-intro-img" style="background-image: url(/)"></div>
+    <div class="site-intro-img" style="background-image: url(http://oumn0o088.bkt.clouddn.com/post-bg.jpg)"></div>
     <div class="site-intro-placeholder"></div>
     <div class="site-intro-meta">
         <!-- 标题  -->
         <h1 class="intro-title">
             <!-- 主页  -->
             
+            理解关键字—yield
+            <!-- 404 -->
+            
         </h1>
         <!-- 副标题 -->
         <p class="intro-subtitle">
             <!-- 主页副标题  -->
             
+            
+            <!-- 404 -->
+            
         </p>
         <!-- 文章页meta -->
+        
+            <!-- 文章页标签  -->
+            
+                <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = grammar>grammar</a>
+    
+</div>
+            
+            <div class="post-intro-meta">
+                <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                <span class="post-intro-time">2017/12/18</span>
+            </div>
         
     </div>
 </div>
@@ -154,78 +187,65 @@
             }
         </script>
         <div class="container container-unloaded">
-            <main class="main index-page">
-    
-    
-    
-        <article class="index-post">
-            <a class="content-show-full" href = "/2017/12/18/yield关键字理解/" >
-                    <h2 class="abstract-title">
-                        
-                        <span>理解关键字—yield</span>
-                    </h2>
-                <div class="abstract-content">
-                     前言为了方便追小说更新撸了一个基于scrapy的爬虫。在实现过程中使用到了 yield，网上对其的文字描述都很难让人理解。通过Debug代码才了解调用顺序，进而理解了它使用方法。
-概念* 理解yeild作用我们可以用一个等式来形容其作用
+            <main class="main post-page">
+    <article class="article-entry">
+        <script src="/assets/js/APlayer.min.js"> </script><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>为了方便追小说更新撸了一个基于scrapy的爬虫。在实现过程中使用到了 <strong>yield</strong>，网上对其的文字描述都很难让人理解。通过Debug代码才了解调用顺序，进而理解了它使用方法。</p>
+<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><h4 id="理解yeild作用"><a href="#理解yeild作用" class="headerlink" title="* 理解yeild作用"></a>* 理解yeild作用</h4><p>我们可以用一个等式来形容其作用</p>
+<blockquote>
+<p><strong>yeild = 返回一个生成器（generator）</strong></p>
+</blockquote>
+<h4 id="什么是生成器？"><a href="#什么是生成器？" class="headerlink" title="* 什么是生成器？"></a>* 什么是生成器？</h4><blockquote>
+<p><strong>生成器  =  可迭代的函数</strong></p>
+</blockquote>
+<p>正常情况下我们可以这样迭代一个函数<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># encoding:UTF-8</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">call</span><span class="params">(i)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> i * <span class="number">2</span></span><br><span class="line"></span><br><span class="line">array = [call(<span class="number">0</span>),call(<span class="number">1</span>),call(<span class="number">2</span>)]</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> array:</span><br><span class="line">    print(i, <span class="string">","</span>)</span><br></pre></td></tr></table></figure></p>
+<p>打印结果：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">0 ,</span><br><span class="line">2 ,</span><br><span class="line">4 ,</span><br></pre></td></tr></table></figure></p>
+<p>假如在海量数据的场景下，这样的写法将对内存造成很大的压力。<strong> 因为列表内所有数据都同时加载在内存中。</strong></p>
+<p>而python的生成器则完美的解决了这一问题，它不需要将所有的值同时加载，<strong> 它只提供了一个生成数据的方式, 而且它是可迭代 </strong></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># encoding:UTF-8</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">call</span><span class="params">(i)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> i * <span class="number">2</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">generator</span><span class="params">(n)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(n):</span><br><span class="line">        <span class="keyword">yield</span> call(i)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> generator(<span class="number">3</span>):</span><br><span class="line">    print(i, <span class="string">","</span>)</span><br></pre></td></tr></table></figure>
+<p>打印结果：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">0 ,</span><br><span class="line">2 ,</span><br><span class="line">4 ,</span><br></pre></td></tr></table></figure></p>
+<p>可以看到 generator 做的事情很简单：<em>循环生成了0到2相对应的值</em></p>
 
-yeild = 返回一个生成器（generator）
+    </article>
+    <!-- 前后页  -->
+    <ul class="post-pager">
+        
+        
+            <li class="previous">
+                <a href= "/2012/05/07/新的开始/" title= 新的开始 >
+                    <span>Previous Post</span>
+                    <span>新的开始</span>
+                </a>
+            </li>
+        
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
 
-* 什么是生成器？
-生成器  =  可迭代的函数
+<!-- City版安装代码已完成 -->
+    
+    
+<div id="container"></div>
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+    var gitment = new Gitment({
+        // id: "理解关键字—yield", // 可选。默认为 location.href
+        owner: 'YanyeZhang',
+        repo: 'YanyeZhang.github.io',
+        oauth: {
+            client_id: 'dbaed912e5b7c0480a2f',
+            client_secret: 'f8eca7690f60152569c598b05df04fe885e17a4b',
+        },
+    })
+    gitment.render('container')
 
-正常情况下我们可以这样迭代一个函数123456789# encoding:UTF-8def call(i):    return i * 2array = [call(0),call(1),call(2)]for i in array:    ...
-                </div>
-            </a>
-            <div class="abstract-post-meta">
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-href = grammar>grammar</a>
-    
-</div>
-                
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2017/12/18</span>
-                </div>
-            </div>
-        </article>
-    
-    
-    
-        <article class="index-post">
-            <a class="content-show-full" href = "/2012/05/07/新的开始/" >
-                    <h2 class="abstract-title">
-                        
-                        <span>新的开始</span>
-                    </h2>
-                <div class="abstract-content">
-                     
-		
-			var ap = new APlayer({
-				element: document.getElementById("aplayer0"),
-				narrow: false,
-				autoplay: false,
-				showlrc: 0,
-				music: {
-					title: "她的睫毛",
-					author: "走川",
-					url: "http://qiniuuwmp3.changba.com/897645292.mp3",
-					pic: "http://aliimg.changba.com/cache/photo/78...
-                </div>
-            </a>
-            <div class="abstract-post-meta">
-                <!-- tags  -->
-                
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2012/05/07</span>
-                </div>
-            </div>
-        </article>
-    
-    <!-- paginator  -->
+</script>
+
+    <!--PC版-->
+
+    <!--PC版-->
+
+
     
 </main>
             <!-- profile -->
@@ -267,6 +287,13 @@ yeild = 返回一个生成器（generator）
 </footer>
     </div>
     <!-- toc -->
+    
+    <div class="toc-wrapper">
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text"><a href="#&#x524D;&#x8A00;" class="headerlink" title="&#x524D;&#x8A00;"></a>&#x524D;&#x8A00;</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#概念"><span class="toc-number">2.</span> <span class="toc-text"><a href="#&#x6982;&#x5FF5;" class="headerlink" title="&#x6982;&#x5FF5;"></a>&#x6982;&#x5FF5;</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#理解yeild作用"><span class="toc-number">2.0.1.</span> <span class="toc-text"><a href="#&#x7406;&#x89E3;yeild&#x4F5C;&#x7528;" class="headerlink" title="* &#x7406;&#x89E3;yeild&#x4F5C;&#x7528;"></a>* &#x7406;&#x89E3;yeild&#x4F5C;&#x7528;</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#什么是生成器？"><span class="toc-number">2.0.2.</span> <span class="toc-text"><a href="#&#x4EC0;&#x4E48;&#x662F;&#x751F;&#x6210;&#x5668;&#xFF1F;" class="headerlink" title="* &#x4EC0;&#x4E48;&#x662F;&#x751F;&#x6210;&#x5668;&#xFF1F;"></a>* &#x4EC0;&#x4E48;&#x662F;&#x751F;&#x6210;&#x5668;&#xFF1F;</span></a></li></ol></li></ol></li></ol>
+    </div>
     
     <div class="back-top">&#xe639;</div>
     <div class="sidebar">
