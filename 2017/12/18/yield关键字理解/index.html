@@ -211,7 +211,7 @@
 <p>而它的结果运行结果却是却是：</p>
 <p><img src="/images/pasted-2.png" alt="upload successful"><br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">0 ,</span><br><span class="line">generate i= 0</span><br><span class="line">2 ,</span><br><span class="line">generate i= 1</span><br><span class="line">4 ,</span><br><span class="line">generate i= 2</span><br><span class="line">end.</span><br></pre></td></tr></table></figure></p>
 <p>可以发现，只要执行到yield关键字都会先return，在外层执行完毕后，再执行yield之后下一条指令。</p>
-<h2 id="启发"><a href="#启发" class="headerlink" title="启发"></a>启发</h2><p>当我们处理数据量大的事物的时候，可以效仿关键字yield这样的思路：<strong>持有索引或者其他可检索的id，在需要的时候再去获取</strong></p>
+<h2 id="启发"><a href="#启发" class="headerlink" title="启发"></a>启发</h2><p>当我们处理数据量大的事物的时候，可以效仿关键字yield这样的思路：<strong>持有索引或者其他可检索的id，在需要的时候再去通过构造器或者其他工具获取</strong></p>
 
     </article>
     <!-- 前后页  -->
