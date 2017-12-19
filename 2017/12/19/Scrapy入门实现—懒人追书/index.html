@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
     <title>
         
-        走川博客
+        追书神器（一）—Scrapy入门 · 走川博客
         
     </title>
     <link rel="icon" href= /assests/favicon.ico>
@@ -60,11 +60,22 @@
     
 </head>
     
+        <body class="post-body">
+    
     
 <header class="header">
 
     <div class="header-sidebar-menu">&#xe775;</div>
     <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >YY&#39;s Studio.</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">追书神器（一）—Scrapy入门</a>
+            </div>
+    </div>
     
     <a class="home-link" href=/>YY's Studio.</a>
 </header>
@@ -72,21 +83,37 @@
         <div class="site-intro">
     
     <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
             
-    <div class="site-intro-img" style="background-image: url(/)"></div>
+    <div class="site-intro-img" style="background-image: url(http://oumn0o088.bkt.clouddn.com/post-bg.jpg)"></div>
     <div class="site-intro-placeholder"></div>
     <div class="site-intro-meta">
         <!-- 标题  -->
         <h1 class="intro-title">
             <!-- 主页  -->
             
+            追书神器（一）—Scrapy入门
+            <!-- 404 -->
+            
         </h1>
         <!-- 副标题 -->
         <p class="intro-subtitle">
             <!-- 主页副标题  -->
             
+            
+            <!-- 404 -->
+            
         </p>
         <!-- 文章页meta -->
+        
+            <!-- 文章页标签  -->
+            
+            <div class="post-intro-meta">
+                <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                <span class="post-intro-time">2017/12/19</span>
+            </div>
         
     </div>
 </div>
@@ -154,68 +181,59 @@
             }
         </script>
         <div class="container container-unloaded">
-            <main class="main index-page">
-    
-    
-    
-        <article class="index-post">
-            <a class="content-show-full" href = "/2017/12/19/Scrapy入门实现—懒人追书/" >
-                    <h2 class="abstract-title">
-                        
-                        <span>追书神器（一）—Scrapy入门</span>
-                    </h2>
-                <div class="abstract-content">
-                     前言看小说是我这么多年来一直持续的习惯。《盘龙》、《斗破苍穹》、《仙逆》、《凡人修仙传》…..  陪伴了我的学生时代。但是最近发现iOS上小说类app体验都不好，经常出现更新不及时、强制分享等情况。于是在一个下雨的晚上，我决定强撸一个追书爬虫……
-Scrapy介绍scrapy是python主流爬虫框架，可以很方便的通过url抓取web信息，同时与传统的requests库相比，提供了更多的工...
-                </div>
-            </a>
-            <div class="abstract-post-meta">
-                <!-- tags  -->
-                
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2017/12/19</span>
-                </div>
-            </div>
-        </article>
-    
-    
-    
-        <article class="index-post">
-            <a class="content-show-full" href = "/2017/12/18/yield关键字理解/" >
-                    <h2 class="abstract-title">
-                        
-                        <span>理解关键字—yield</span>
-                    </h2>
-                <div class="abstract-content">
-                     前言为了方便追小说更新撸了一个基于scrapy的爬虫。在实现过程中使用到了 yield，网上对其的文字描述都很难让人理解。通过Debug代码才了解调用顺序，进而理解了它使用方法。
-概念理解yield作用我们可以用一个等式来形容其作用：
+            <main class="main post-page">
+    <article class="article-entry">
+        <script src="/assets/js/APlayer.min.js"> </script><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>看小说是我这么多年来一直持续的习惯。《盘龙》、《斗破苍穹》、《仙逆》、《凡人修仙传》…..  陪伴了我的学生时代。但是最近发现iOS上小说类app体验都不好，经常出现更新不及时、强制分享等情况。于是在一个下雨的晚上，我决定强撸一个追书爬虫……</p>
+<h2 id="Scrapy介绍"><a href="#Scrapy介绍" class="headerlink" title="Scrapy介绍"></a>Scrapy介绍</h2><p>scrapy是python主流爬虫框架，可以很方便的通过url抓取web信息，同时与传统的requests库相比，提供了更多的工具和更高的并发。推荐从<a href="https://doc.scrapy.org/en/latest/topics/spiders.html" target="_blank" rel="noopener">官方学习网站</a>上学习。</p>
+<p><strong>不过，你一点scrapy资料都不知道也没有关系，读完本文一样能撸出来</strong></p>
+<h2 id="Scrapy实战"><a href="#Scrapy实战" class="headerlink" title="Scrapy实战"></a>Scrapy实战</h2><p>在开始前，我们需要准备好以下几个东西：</p>
+<ol>
+<li>开发环境</li>
+<li>想要爬取的小说网页</li>
+<li>入门级的python语法</li>
+</ol>
+<h4 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h4>
+    </article>
+    <!-- 前后页  -->
+    <ul class="post-pager">
+        
+        
+            <li class="previous">
+                <a href= "/2017/12/18/yield关键字理解/" title= 理解关键字—yield >
+                    <span>Previous Post</span>
+                    <span>理解关键字—yield</span>
+                </a>
+            </li>
+        
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
 
-yeild 函数 = return 生成器（generator）
+<!-- City版安装代码已完成 -->
+    
+    
+<div id="container"></div>
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+    var gitment = new Gitment({
+        // id: "追书神器（一）—Scrapy入门", // 可选。默认为 location.href
+        owner: 'YanyeZhang',
+        repo: 'YanyeZhang.github.io',
+        oauth: {
+            client_id: 'dbaed912e5b7c0480a2f',
+            client_secret: 'f8eca7690f60152569c598b05df04fe885e17a4b',
+        },
+    })
+    gitment.render('container')
 
-什么是生成器
-生成器  =  可迭代的函数
+</script>
 
-正常情况下我们可以这样迭代一个列表123...
-                </div>
-            </a>
-            <div class="abstract-post-meta">
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-href = python>python</a>
-    
-</div>
-                
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2017/12/18</span>
-                </div>
-            </div>
-        </article>
-    
-    <!-- paginator  -->
+    <!--PC版-->
+
+    <!--PC版-->
+
+
     
 </main>
             <!-- profile -->
@@ -257,6 +275,13 @@ yeild 函数 = return 生成器（generator）
 </footer>
     </div>
     <!-- toc -->
+    
+    <div class="toc-wrapper">
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text"><a href="#&#x524D;&#x8A00;" class="headerlink" title="&#x524D;&#x8A00;"></a>&#x524D;&#x8A00;</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Scrapy介绍"><span class="toc-number">2.</span> <span class="toc-text"><a href="#Scrapy&#x4ECB;&#x7ECD;" class="headerlink" title="Scrapy&#x4ECB;&#x7ECD;"></a>Scrapy&#x4ECB;&#x7ECD;</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Scrapy实战"><span class="toc-number">3.</span> <span class="toc-text"><a href="#Scrapy&#x5B9E;&#x6218;" class="headerlink" title="Scrapy&#x5B9E;&#x6218;"></a>Scrapy&#x5B9E;&#x6218;</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#环境搭建"><span class="toc-number">3.0.1.</span> <span class="toc-text"><a href="#&#x73AF;&#x5883;&#x642D;&#x5EFA;" class="headerlink" title="&#x73AF;&#x5883;&#x642D;&#x5EFA;"></a>&#x73AF;&#x5883;&#x642D;&#x5EFA;</span></a></li></ol></li></ol></li></ol>
+    </div>
     
     <div class="back-top">&#xe639;</div>
     <div class="sidebar">
