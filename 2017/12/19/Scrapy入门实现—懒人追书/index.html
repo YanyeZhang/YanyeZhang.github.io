@@ -198,13 +198,19 @@
 <li>环境搭建</li>
 <li>入门级的python语法</li>
 </ol>
-<h4 id="选取网站"><a href="#选取网站" class="headerlink" title="选取网站"></a>选取网站</h4><p>这里我选的是 <a href="https://m.book9.net/" target="_blank" rel="noopener">https://m.book9.net/</a>。 选这个网站的原因是因为它的更新速度比较快、页面的结构简单，而且没有做一些防爬虫的保护。</p>
+<h4 id="选取网站"><a href="#选取网站" class="headerlink" title="选取网站"></a>选取网站</h4><p>这里我选的是 <a href="https://m.book9.net/" target="_blank" rel="noopener">https://m.book9.net/</a>。 选这个网站是因为它有是三个优点</p>
+<ol>
+<li>更新速度比较快 （服务稳定）</li>
+<li>页面的结构简单 （易于解析）</li>
+<li>没有做一些防爬虫的保护 （操作简单）</li>
+</ol>
 <p><strong>接下来，找到追更小说的主页。</strong></p>
 <p>如 <a href="https://m.book9.net/wapbook/10.html" target="_blank" rel="noopener">辰东的《圣墟》</a></p>
 <p><img src="/images/pasted-7.png" alt="upload successful"></p>
 <p>假设正常我们要追更的话，需要每次打开这个网站，并选取最新章节的第一个选项条。点开就是我们想要的小说章节。</p>
 <p>因此我设计出了这样一个流程：</p>
-<p><img src="/images/pasted-9.png" alt="upload successful"></p>
+<p><img src="/images/pasted-10.png" alt="upload successful"></p>
+<p><strong>所以接下来，我们只需要根据这些流程来转化成我们的代码就好了</strong></p>
 <h4 id="搭建工程"><a href="#搭建工程" class="headerlink" title="搭建工程"></a>搭建工程</h4><p>接下来，我们将要搭建一个Scrapy壳工程，在这之前要先确保自己安装了python的环境。<strong>框架自身兼容2、3版本，所以不需要担心版本的差异</strong>。</p>
 <p>我本地的环境是python3，所以可能会和2有细微的差异操作。</p>
 <p><strong>1.安装Scrapy</strong><br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span> pip3 install scrapy</span><br></pre></td></tr></table></figure></p>
@@ -215,7 +221,7 @@
 <h4 id="爬虫编写"><a href="#爬虫编写" class="headerlink" title="爬虫编写"></a>爬虫编写</h4><p>接下来我们用Pycharm来打开刚刚创建好的工程。</p>
 <p><img src="/images/pasted-5.png" alt="upload successful"></p>
 <p>scrapy的所有爬虫服务都集中在spiders目录下，我们也在这里添爬虫文件novel.py</p>
-<p><img src="/images/pasted-6.png" alt="upload successful"><br>我们打开文件，添加一些基础的配置<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></p>
+<p><img src="/images/pasted-6.png" alt="upload successful"><br>我们打开文件，添加一些基础的配置<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># encoding:utf-8</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> scrapy</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NovelSpider</span><span class="params">(scrapy.Spider)</span>:</span></span><br><span class="line">    name = <span class="string">'novel'</span>  <span class="comment">#配置服务名称，与上文创建服务的名称相同</span></span><br><span class="line">    allowed_domains = [<span class="string">'m.book9.net'</span>] <span class="comment">#允许访问的域，与上文创建服务的名称相同</span></span><br><span class="line">    start_urls = [<span class="string">'https://m.book9.net/wapbook/10.html'</span>] <span class="comment">#发起请求的url，对应上文《圣墟》的小说主页</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parse</span><span class="params">(self, response)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br></pre></td></tr></table></figure></p>
 
     </article>
     <!-- 前后页  -->
