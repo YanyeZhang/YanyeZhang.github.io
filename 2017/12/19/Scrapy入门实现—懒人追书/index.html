@@ -194,7 +194,7 @@
 <p><strong>不过，你一点scrapy资料都不知道也没有关系，读完本文一样能撸出来</strong></p>
 <h2 id="Scrapy实战"><a href="#Scrapy实战" class="headerlink" title="Scrapy实战"></a>Scrapy实战</h2><p>在开始前，我们需要准备好以下几个东西：</p>
 <ol>
-<li>想要爬取的小说网页</li>
+<li>想要爬取的小说url</li>
 <li>环境搭建</li>
 <li>入门级的python语法</li>
 </ol>
@@ -205,10 +205,10 @@
 <li>没有做一些防爬虫的保护 （操作简单）</li>
 </ol>
 <p><strong>接下来，找到追更小说的主页。</strong></p>
-<p>如 <a href="https://m.book9.net/wapbook/10.html" target="_blank" rel="noopener">辰东的《圣墟》</a></p>
+<p>比如 <a href="https://m.book9.net/wapbook/10.html" target="_blank" rel="noopener">辰东的《圣墟》</a></p>
 <p><img src="/images/pasted-7.png" alt="upload successful"></p>
-<p>假设正常我们要追更的话，需要每次打开这个网站，并选取最新章节的第一个选项条。点开就是我们想要的小说章节。</p>
-<p>因此我设计出了这样一个流程：</p>
+<p>假设现在我们要追更的话，需要每次打开这个网站，然后点击最新章节的第一个选项条，链接到具体的小说章节。</p>
+<p>仿造以上的流程，我设计出了这样一个流程：</p>
 <p><img src="/images/pasted-10.png" alt="upload successful"></p>
 <p><strong>所以接下来，我们只需要根据这些流程来转化成我们的代码就好了</strong></p>
 <h4 id="搭建工程"><a href="#搭建工程" class="headerlink" title="搭建工程"></a>搭建工程</h4><p>接下来，我们将要搭建一个Scrapy壳工程，在这之前要先确保自己安装了python的环境。<strong>框架自身兼容2、3版本，所以不需要担心版本的差异</strong>。</p>
@@ -216,12 +216,27 @@
 <p><strong>1.安装Scrapy</strong><br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span> pip3 install scrapy</span><br></pre></td></tr></table></figure></p>
 <p><strong>2.创建爬虫工程，将其命名为NovelCrawler</strong><br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span> scrapy startproject NovelCrawler</span><br></pre></td></tr></table></figure></p>
 <p><strong>3. 创建一个基于 url 的爬虫服务</strong><br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span> scrapy genspider novel m.book9.net</span><br></pre></td></tr></table></figure></p>
-<p>以上就是基本的工程创建过程，执行完毕之后就可以使用<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span> scrapy crawl novelcrawler</span><br></pre></td></tr></table></figure></p>
+<p>以上就是基本的工程创建过程，执行完毕之后就可以使用<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span> scrapy crawl novel</span><br></pre></td></tr></table></figure></p>
 <p>命令去开启爬虫服务。不过当前我们的爬虫还没有实现任何的规则，所以即使执行了命令也不会做任何事，所以我们需要在工程中添加一些爬虫规则。</p>
 <h4 id="爬虫编写"><a href="#爬虫编写" class="headerlink" title="爬虫编写"></a>爬虫编写</h4><p>接下来我们用Pycharm来打开刚刚创建好的工程。</p>
 <p><img src="/images/pasted-5.png" alt="upload successful"></p>
 <p>scrapy的所有爬虫服务都集中在spiders目录下，我们也在这里添爬虫文件novel.py</p>
-<p><img src="/images/pasted-6.png" alt="upload successful"><br>我们打开文件，添加一些基础的配置<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># encoding:utf-8</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> scrapy</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NovelSpider</span><span class="params">(scrapy.Spider)</span>:</span></span><br><span class="line">    name = <span class="string">'novel'</span>  <span class="comment">#配置服务名称，与上文创建服务的名称相同</span></span><br><span class="line">    allowed_domains = [<span class="string">'m.book9.net'</span>] <span class="comment">#允许访问的域，与上文创建服务的名称相同</span></span><br><span class="line">    start_urls = [<span class="string">'https://m.book9.net/wapbook/10.html'</span>] <span class="comment">#发起请求的url，对应上文《圣墟》的小说主页</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parse</span><span class="params">(self, response)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br></pre></td></tr></table></figure></p>
+<p><img src="/images/pasted-6.png" alt="upload successful"><br>我们打开文件，添加一些基础的配置<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># encoding:utf-8</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> scrapy</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">NovelSpider</span><span class="params">(scrapy.Spider)</span>:</span></span><br><span class="line">    name = <span class="string">'novel'</span>  <span class="comment">#配置服务名称，与上文创建服务的名称相同</span></span><br><span class="line">    allowed_domains = [<span class="string">'m.book9.net'</span>] <span class="comment">#允许访问的域，与上文创建服务的名称相同</span></span><br><span class="line">    start_urls = [<span class="string">'https://m.book9.net/wapbook/10.html'</span>] <span class="comment">#发起请求的url，《圣墟》小说主页</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">parse</span><span class="params">(self, response)</span>:</span> <span class="comment">#默认的请求成功的回调函数</span></span><br><span class="line">        <span class="keyword">pass</span></span><br></pre></td></tr></table></figure></p>
+<p>上面的代码中，parse函数的入参数response对象里面有什么参数对我们来说是未知的，这也是初学python很头疼的地方。这里给大家提供一个方法：<strong>用Pycharm的debug功能查看参数</strong></p>
+<p><img src="/images/pasted-13.png" alt="upload successful"></p>
+<p>从上图中我们可以发现，response包含了请求的html信息。因此我们只需要将其解析，截取出我们需要的部分。</p>
+<p>那么如何解析我们需要的节点呢，response给我们提供了一个方法<br><a href="https://baike.baidu.com/item/XPath/5574064?fr=aladdin" target="_blank" rel="noopener">xpath</a>，我们只需要输入的xpath规则就可以定位到相应html标签节点。</p>
+<p>不会xpath语法没关系，Chrome给我们提供了一键获取xpath地址的方法（右键-&gt;检查-&gt;copy-&gt;copy xpath）,如下图:<br><img src="/images/pasted-15.png" alt="upload successful"></p>
+<p>我们可以从这个页面获取到<strong>最新章节的地址</strong></p>
+<p>```python</p>
+<h1 id="encoding-utf-8"><a href="#encoding-utf-8" class="headerlink" title="encoding:utf-8"></a>encoding:utf-8</h1><p>import scrapy</p>
+<p>class NovelSpider(scrapy.Spider):<br>    name = ‘novel’<br>    allowed_domains = [‘m.book9.net’]<br>    start_urls = [‘<a href="https://m.book9.net/wapbook/10.html" target="_blank" rel="noopener">https://m.book9.net/wapbook/10.html</a>‘]</p>
+<pre><code>def parse(self, response):
+    context = response.xpath(&apos;/html/body/div[3]/div[2]/p[1]/a/@href&apos;)   #指定的&lt;a&gt;标签的跳转链接
+    novel = context.extract_first()  #提取数组的第一个结果 即最新章节的url
+    print(novel) 
+    pass
+</code></pre><p>```运行后结果</p>
 
     </article>
     <!-- 前后页  -->
@@ -310,7 +325,7 @@
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text"><a href="#&#x524D;&#x8A00;" class="headerlink" title="&#x524D;&#x8A00;"></a>&#x524D;&#x8A00;</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Scrapy介绍"><span class="toc-number">2.</span> <span class="toc-text"><a href="#Scrapy&#x4ECB;&#x7ECD;" class="headerlink" title="Scrapy&#x4ECB;&#x7ECD;"></a>Scrapy&#x4ECB;&#x7ECD;</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Scrapy实战"><span class="toc-number">3.</span> <span class="toc-text"><a href="#Scrapy&#x5B9E;&#x6218;" class="headerlink" title="Scrapy&#x5B9E;&#x6218;"></a>Scrapy&#x5B9E;&#x6218;</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#选取网站"><span class="toc-number">3.0.1.</span> <span class="toc-text"><a href="#&#x9009;&#x53D6;&#x7F51;&#x7AD9;" class="headerlink" title="&#x9009;&#x53D6;&#x7F51;&#x7AD9;"></a>&#x9009;&#x53D6;&#x7F51;&#x7AD9;</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#搭建工程"><span class="toc-number">3.0.2.</span> <span class="toc-text"><a href="#&#x642D;&#x5EFA;&#x5DE5;&#x7A0B;" class="headerlink" title="&#x642D;&#x5EFA;&#x5DE5;&#x7A0B;"></a>&#x642D;&#x5EFA;&#x5DE5;&#x7A0B;</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#爬虫编写"><span class="toc-number">3.0.3.</span> <span class="toc-text"><a href="#&#x722C;&#x866B;&#x7F16;&#x5199;" class="headerlink" title="&#x722C;&#x866B;&#x7F16;&#x5199;"></a>&#x722C;&#x866B;&#x7F16;&#x5199;</span></a></li></ol></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text"><a href="#&#x524D;&#x8A00;" class="headerlink" title="&#x524D;&#x8A00;"></a>&#x524D;&#x8A00;</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Scrapy介绍"><span class="toc-number">2.</span> <span class="toc-text"><a href="#Scrapy&#x4ECB;&#x7ECD;" class="headerlink" title="Scrapy&#x4ECB;&#x7ECD;"></a>Scrapy&#x4ECB;&#x7ECD;</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Scrapy实战"><span class="toc-number">3.</span> <span class="toc-text"><a href="#Scrapy&#x5B9E;&#x6218;" class="headerlink" title="Scrapy&#x5B9E;&#x6218;"></a>Scrapy&#x5B9E;&#x6218;</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#选取网站"><span class="toc-number">3.0.1.</span> <span class="toc-text"><a href="#&#x9009;&#x53D6;&#x7F51;&#x7AD9;" class="headerlink" title="&#x9009;&#x53D6;&#x7F51;&#x7AD9;"></a>&#x9009;&#x53D6;&#x7F51;&#x7AD9;</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#搭建工程"><span class="toc-number">3.0.2.</span> <span class="toc-text"><a href="#&#x642D;&#x5EFA;&#x5DE5;&#x7A0B;" class="headerlink" title="&#x642D;&#x5EFA;&#x5DE5;&#x7A0B;"></a>&#x642D;&#x5EFA;&#x5DE5;&#x7A0B;</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#爬虫编写"><span class="toc-number">3.0.3.</span> <span class="toc-text"><a href="#&#x722C;&#x866B;&#x7F16;&#x5199;" class="headerlink" title="&#x722C;&#x866B;&#x7F16;&#x5199;"></a>&#x722C;&#x866B;&#x7F16;&#x5199;</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#encoding-utf-8"><span class="toc-number"></span> <span class="toc-text"><a href="#encoding-utf-8" class="headerlink" title="encoding:utf-8"></a>encoding:utf-8</span></a>
     </div>
     
     <div class="back-top">&#xe639;</div>
