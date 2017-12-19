@@ -189,7 +189,7 @@
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <script src="/assets/js/APlayer.min.js"> </script><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>看小说是我这么多年来一直保持的习惯。《盘龙》、《斗破苍穹》、《仙逆》、《凡人修仙传》等等，陪伴了我整个学生时代。最近发现iOS上小说类app体验都不好，经常出现广告弹出、更新不及时、强制分享等情况。于是在一个下雨的晚上，我决定不再忍受这些app，自己强撸一个追书爬虫</p>
+        <script src="/assets/js/APlayer.min.js"> </script><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>看小说是我这么多年来一直保持的习惯。《盘龙》、《斗破苍穹》、《仙逆》、《凡人修仙传》等等，陪伴了我整个学生时代。最近发现iOS上小说类app体验都不好，经常出现广告弹出、更新不及时、强制分享等情况。于是在一个下雨的晚上，我决定不再忍受这些app，自己强撸一个追书爬虫。</p>
 <h2 id="Scrapy介绍"><a href="#Scrapy介绍" class="headerlink" title="Scrapy介绍"></a>Scrapy介绍</h2><p>Scrapy是python主流爬虫框架，可以很方便的通过url抓取web信息，同时与传统的requests库相比，提供了更多的工具和更高的并发。推荐从<a href="https://doc.scrapy.org/en/latest/topics/spiders.html" target="_blank" rel="noopener">官方学习网站</a>上学习。</p>
 <p><strong>不过，你一点scrapy资料都不知道也没有关系，读完本文一样能撸出来</strong></p>
 <h2 id="Scrapy实战"><a href="#Scrapy实战" class="headerlink" title="Scrapy实战"></a>Scrapy实战</h2><p>在开始前，我们需要准备好以下几个东西：</p>
@@ -198,15 +198,23 @@
 <li>环境搭建</li>
 <li>入门级的python语法</li>
 </ol>
-<p>这里我选的是 <a href="https://m.book9.net/" target="_blank" rel="noopener">https://m.book9.net/</a>。 选这个网站的原因是因为它的更新速度比较快，而且页面的结构简单，没有一些防爬虫的保护。</p>
+<h4 id="选取网站"><a href="#选取网站" class="headerlink" title="选取网站"></a>选取网站</h4><p>这里我选的是 <a href="https://m.book9.net/" target="_blank" rel="noopener">https://m.book9.net/</a>。 选这个网站的原因是因为它的更新速度比较快，而且页面的结构简单，没有一些防爬虫的保护。</p>
+<p><strong>接下，在这个网站中追更书籍的主页。</strong></p>
+<p>如 <a href="https://m.book9.net/wapbook/10.html" target="_blank" rel="noopener">辰东的《圣墟》</a></p>
+<p><img src="/images/pasted-7.png" alt="upload successful"></p>
+<p>假设正常我们要追更的话，需要每次打开这个网站，并选取最新章节的第一个选项条。点开就是我们想要的小说章节。</p>
 <h4 id="搭建工程"><a href="#搭建工程" class="headerlink" title="搭建工程"></a>搭建工程</h4><p>接下来，我们将要搭建一个Scrapy壳工程，在这之前要先确保自己安装了python的环境。<strong>框架自身兼容2、3版本，所以不需要担心版本的差异</strong>。</p>
 <p>我本地的环境是python3，所以可能会和2有细微的差异操作。</p>
 <p><strong>1.安装Scrapy</strong><br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span> pip3 install scrapy</span><br></pre></td></tr></table></figure></p>
 <p><strong>2.创建爬虫工程，将其命名为NovelCrawler</strong><br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span> scrapy startproject NovelCrawler</span><br></pre></td></tr></table></figure></p>
-<p><strong>3. 创建一个基于 url 的爬虫服务</strong><br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span> scrapy genspider novelcrawler m.book9.net</span><br></pre></td></tr></table></figure></p>
+<p><strong>3. 创建一个基于 url 的爬虫服务</strong><br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span> scrapy genspider novel m.book9.net</span><br></pre></td></tr></table></figure></p>
 <p>以上就是基本的工程创建过程，执行完毕之后就可以使用<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span> scrapy crawl novelcrawler</span><br></pre></td></tr></table></figure></p>
-<p>命令去开启爬虫服务。不过当前我们的爬虫还没有实现任何的规则，所以即使执行了命令也不会做任何事，所以我们需要在工程中添加一些爬虫规则</p>
-<h4 id="爬虫编写"><a href="#爬虫编写" class="headerlink" title="爬虫编写"></a>爬虫编写</h4>
+<p>命令去开启爬虫服务。不过当前我们的爬虫还没有实现任何的规则，所以即使执行了命令也不会做任何事，所以我们需要在工程中添加一些爬虫规则。</p>
+<h4 id="爬虫编写"><a href="#爬虫编写" class="headerlink" title="爬虫编写"></a>爬虫编写</h4><p>接下来我们用Pycharm来打开刚刚创建好的工程。</p>
+<p><img src="/images/pasted-5.png" alt="upload successful"></p>
+<p>scrapy的所有爬虫服务都集中在spiders目录下，我们也在这里添爬虫文件novel.py</p>
+<p><img src="/images/pasted-6.png" alt="upload successful"><br>我们打开文件，添加一些基础的配置<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure></p>
+
     </article>
     <!-- 前后页  -->
     <ul class="post-pager">
@@ -294,7 +302,7 @@
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text"><a href="#&#x524D;&#x8A00;" class="headerlink" title="&#x524D;&#x8A00;"></a>&#x524D;&#x8A00;</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Scrapy介绍"><span class="toc-number">2.</span> <span class="toc-text"><a href="#Scrapy&#x4ECB;&#x7ECD;" class="headerlink" title="Scrapy&#x4ECB;&#x7ECD;"></a>Scrapy&#x4ECB;&#x7ECD;</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Scrapy实战"><span class="toc-number">3.</span> <span class="toc-text"><a href="#Scrapy&#x5B9E;&#x6218;" class="headerlink" title="Scrapy&#x5B9E;&#x6218;"></a>Scrapy&#x5B9E;&#x6218;</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#搭建工程"><span class="toc-number">3.0.1.</span> <span class="toc-text"><a href="#&#x642D;&#x5EFA;&#x5DE5;&#x7A0B;" class="headerlink" title="&#x642D;&#x5EFA;&#x5DE5;&#x7A0B;"></a>&#x642D;&#x5EFA;&#x5DE5;&#x7A0B;</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#爬虫编写"><span class="toc-number">3.0.2.</span> <span class="toc-text"><a href="#&#x722C;&#x866B;&#x7F16;&#x5199;" class="headerlink" title="&#x722C;&#x866B;&#x7F16;&#x5199;"></a>&#x722C;&#x866B;&#x7F16;&#x5199;</span></a></li></ol></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text"><a href="#&#x524D;&#x8A00;" class="headerlink" title="&#x524D;&#x8A00;"></a>&#x524D;&#x8A00;</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Scrapy介绍"><span class="toc-number">2.</span> <span class="toc-text"><a href="#Scrapy&#x4ECB;&#x7ECD;" class="headerlink" title="Scrapy&#x4ECB;&#x7ECD;"></a>Scrapy&#x4ECB;&#x7ECD;</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Scrapy实战"><span class="toc-number">3.</span> <span class="toc-text"><a href="#Scrapy&#x5B9E;&#x6218;" class="headerlink" title="Scrapy&#x5B9E;&#x6218;"></a>Scrapy&#x5B9E;&#x6218;</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#选取网站"><span class="toc-number">3.0.1.</span> <span class="toc-text"><a href="#&#x9009;&#x53D6;&#x7F51;&#x7AD9;" class="headerlink" title="&#x9009;&#x53D6;&#x7F51;&#x7AD9;"></a>&#x9009;&#x53D6;&#x7F51;&#x7AD9;</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#搭建工程"><span class="toc-number">3.0.2.</span> <span class="toc-text"><a href="#&#x642D;&#x5EFA;&#x5DE5;&#x7A0B;" class="headerlink" title="&#x642D;&#x5EFA;&#x5DE5;&#x7A0B;"></a>&#x642D;&#x5EFA;&#x5DE5;&#x7A0B;</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#爬虫编写"><span class="toc-number">3.0.3.</span> <span class="toc-text"><a href="#&#x722C;&#x866B;&#x7F16;&#x5199;" class="headerlink" title="&#x722C;&#x866B;&#x7F16;&#x5199;"></a>&#x722C;&#x866B;&#x7F16;&#x5199;</span></a></li></ol></li></ol></li></ol>
     </div>
     
     <div class="back-top">&#xe639;</div>
