@@ -106,7 +106,7 @@ h1 span {
 }
 
 /* shadow */
-.giftbox .box::after {
+.giftbox .box::afer {
 	background: rgba(0,0,0,0.1);
 	left: 0;
 	height: 30px;

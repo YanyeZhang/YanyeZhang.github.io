@@ -20,10 +20,13 @@
 	}
 
 	function runAnimation() {
-		if( step === 1 ) {
+		if( step === 1 ) { 
 			box.removeEventListener( 'click', runAnimation );
+			document.getElementById( 'bg_music' ).pause();
+			setTimeout("document.getElementById( 'audio' ).play()",3000)
 		}
 		incStep( step );
+		
 		if( step === 4 ) {
 			letitsnow();
 			return;
