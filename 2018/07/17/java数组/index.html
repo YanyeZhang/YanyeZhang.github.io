@@ -213,12 +213,13 @@
 <p>（3）不是每次都会去扩容，只有当前容量不满足最低要求容量时候才会去扩容<br>（4）一般情况下扩容大小会是是1.5倍，了解这个有助于我们了解使用容器时候的内存情况</p>
 <p>现在将上面插入部分与扩容整合在一起，整理出流程图：<br><img src="https://github.com/YanyeZhang/YanyeZhang.github.io/blob/master/images/ArrayList%E6%8F%92%E5%85%A5%E6%B5%81%E7%A8%8B%E5%9B%BE.png?raw=true" alt="插入流程图"><br>以上的图省略了一些边界情况，如果当数组为空，或者当数组已经最大等情况</p>
 <h3 id="fast-fail"><a href="#fast-fail" class="headerlink" title="fast-fail"></a>fast-fail</h3><p>这部分的内容，是具有通用性的，在java.util中被广泛使用，如HashMap等。我将另开章节<a href="https://github.com/YanyeZhang/YanyeZhang.github.io/2018/07/18/Java-中的-fast-fail-与-fast-safe-机制/" target="_blank" rel="noopener">fast-fail机制</a>来绍</p>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>关于ArrayList，我们必须要掌握的要点如下：</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>ArrayList的实现很简单。只需要花上半小时的时间大致就可以看完。而关于ArrayList，我们必须要掌握的要点如下：</p>
 <ol>
 <li>扩容机制，什么时候扩容，扩容后的大小</li>
 <li>查询快、删除慢的原因</li>
 <li>为什么是线程不安全，modCount</li>
 </ol>
+<p>了解了这些，会有助于你避免一些日常开发过程中的坑。 Best wish！~</p>
 
     </article>
     <!-- 前后页  -->
@@ -321,8 +322,6 @@
     <div class="sidebar-content sidebar-content-show-archive">
           <div class="sidebar-archive">
     <!-- 在ejs中将archive按照时间排序 -->
-    
-    
     
     
     
