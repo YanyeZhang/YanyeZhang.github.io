@@ -199,6 +199,13 @@
 </li>
 </ul>
 <h2 id="主要内容"><a href="#主要内容" class="headerlink" title="主要内容"></a>主要内容</h2><p><img src="https://github.com/YanyeZhang/YanyeZhang.github.io/blob/master/images/hashmap.png?raw=true" alt="内容大纲"></p>
+<h3 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h3><p>HashMap的数据结构在JDK1.8比之于JDK1.7有一个重大的升级：增加了红黑树结构。</p>
+<ul>
+<li>在JDK1.7中对于发生hash碰撞的值，会通过链表的方式插入：<br><img src="图" alt="内容大纲"></li>
+<li>在JDK1.8中为了解决当链表过长而导致查询速度变慢的问题，引用了红黑树<br><img src="图" alt="内容大纲"></li>
+</ul>
+<p>关于红黑树的内容，这里先不多加赘述。</p>
+<p>### </p>
 
     </article>
     <!-- 前后页  -->
@@ -287,7 +294,7 @@
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text"><a href="#&#x524D;&#x8A00;" class="headerlink" title="&#x524D;&#x8A00;"></a>&#x524D;&#x8A00;</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#类定义"><span class="toc-number">2.</span> <span class="toc-text"><a href="#&#x7C7B;&#x5B9A;&#x4E49;" class="headerlink" title="&#x7C7B;&#x5B9A;&#x4E49;"></a>&#x7C7B;&#x5B9A;&#x4E49;</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#主要内容"><span class="toc-number">3.</span> <span class="toc-text"><a href="#&#x4E3B;&#x8981;&#x5185;&#x5BB9;" class="headerlink" title="&#x4E3B;&#x8981;&#x5185;&#x5BB9;"></a>&#x4E3B;&#x8981;&#x5185;&#x5BB9;</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text"><a href="#&#x524D;&#x8A00;" class="headerlink" title="&#x524D;&#x8A00;"></a>&#x524D;&#x8A00;</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#类定义"><span class="toc-number">2.</span> <span class="toc-text"><a href="#&#x7C7B;&#x5B9A;&#x4E49;" class="headerlink" title="&#x7C7B;&#x5B9A;&#x4E49;"></a>&#x7C7B;&#x5B9A;&#x4E49;</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#主要内容"><span class="toc-number">3.</span> <span class="toc-text"><a href="#&#x4E3B;&#x8981;&#x5185;&#x5BB9;" class="headerlink" title="&#x4E3B;&#x8981;&#x5185;&#x5BB9;"></a>&#x4E3B;&#x8981;&#x5185;&#x5BB9;</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#数据结构"><span class="toc-number">3.1.</span> <span class="toc-text"><a href="#&#x6570;&#x636E;&#x7ED3;&#x6784;" class="headerlink" title="&#x6570;&#x636E;&#x7ED3;&#x6784;"></a>&#x6570;&#x636E;&#x7ED3;&#x6784;</span></a></li></ol></li></ol>
     </div>
     
     <div class="back-top">&#xe639;</div>
@@ -301,10 +308,6 @@
     <div class="sidebar-content sidebar-content-show-archive">
           <div class="sidebar-archive">
     <!-- 在ejs中将archive按照时间排序 -->
-    
-    
-    
-    
     
     
     
