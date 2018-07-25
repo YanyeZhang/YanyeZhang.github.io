@@ -184,7 +184,7 @@
             <main class="main post-page">
     <article class="article-entry">
         <script src="/assets/js/APlayer.min.js"> </script><p><strong>阅读提醒</strong>：将本文结合源码一起使用味道更佳哦！~</p>
-<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p> 上一章写到<a href="https://yanyezhang.github.io/2018/07/17/java%E6%95%B0%E7%BB%84/" target="_blank" rel="noopener">ArrayList的源码分析</a>，而本篇将会对同样是最常用的容器之一的HashMap来进行分析。之前面试应聘者的时候，经常会问到HashMap的底层数据结构的部分。很多人只回答出是“哈希表”。因此特意引用网上哈希表的定义：</p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p> 上一章写到<a href="https://yanyezhang.github.io/2018/07/17/java%E6%95%B0%E7%BB%84/" target="_blank" rel="noopener">ArrayList的源码分析</a>，而本篇将会对同样是最常用的容器之一的HashMap来进行分析。之前面试求职者，经常会问到HashMap的底层数据结构的部分。很多人只回答出是“哈希表”。因此特意引用网上哈希表的定义：</p>
 <blockquote>
 <p>散列表（Hash table，也叫哈希表），是根据关键码值(Key value)而直接进行访问的数据结构。也就是说，它通过把关键码值映射到表中一个位置来访问记录，以加快查找的速度。</p>
 </blockquote>
@@ -198,7 +198,7 @@
 <li><p>Serializable：标记接口，可被默认的序列化机制序列化与反序列化</p>
 </li>
 </ul>
-<p>###</p>
+<h2 id="主要内容"><a href="#主要内容" class="headerlink" title="主要内容"></a>主要内容</h2><p><img src="https://github.com/YanyeZhang/YanyeZhang.github.io/blob/master/images/ArrayList.png?raw=true" alt="内容大纲"></p>
 
     </article>
     <!-- 前后页  -->
@@ -287,7 +287,7 @@
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text"><a href="#&#x524D;&#x8A00;" class="headerlink" title="&#x524D;&#x8A00;"></a>&#x524D;&#x8A00;</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#类定义"><span class="toc-number">2.</span> <span class="toc-text"><a href="#&#x7C7B;&#x5B9A;&#x4E49;" class="headerlink" title="&#x7C7B;&#x5B9A;&#x4E49;"></a>&#x7C7B;&#x5B9A;&#x4E49;</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text"><a href="#&#x524D;&#x8A00;" class="headerlink" title="&#x524D;&#x8A00;"></a>&#x524D;&#x8A00;</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#类定义"><span class="toc-number">2.</span> <span class="toc-text"><a href="#&#x7C7B;&#x5B9A;&#x4E49;" class="headerlink" title="&#x7C7B;&#x5B9A;&#x4E49;"></a>&#x7C7B;&#x5B9A;&#x4E49;</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#主要内容"><span class="toc-number">3.</span> <span class="toc-text"><a href="#&#x4E3B;&#x8981;&#x5185;&#x5BB9;" class="headerlink" title="&#x4E3B;&#x8981;&#x5185;&#x5BB9;"></a>&#x4E3B;&#x8981;&#x5185;&#x5BB9;</span></a></li></ol>
     </div>
     
     <div class="back-top">&#xe639;</div>
