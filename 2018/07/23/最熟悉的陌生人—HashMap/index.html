@@ -188,7 +188,7 @@
 <blockquote>
 <p>散列表（Hash table，也叫哈希表），是根据关键码值(Key value)而直接进行访问的数据结构。也就是说，它通过把关键码值映射到表中一个位置来访问记录，以加快查找的速度。</p>
 </blockquote>
-<p>由定义可以肯定的是HashMap是哈希表，可是它的底层实现数据结构又是什么？本篇将会深入了进行分析</p>
+<p>由定义可以肯定的是HashMap是哈希表，而哈希表到底是怎么实现的呢？本篇将会带领你一步一步拆解</p>
 <h2 id="类定义"><a href="#类定义" class="headerlink" title="类定义"></a>类定义</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HashMap</span>&lt;<span class="title">K</span>, <span class="title">V</span>&gt; <span class="keyword">extends</span> <span class="title">AbstractMap</span>&lt;<span class="title">K</span>, <span class="title">V</span>&gt;</span></span><br><span class="line"><span class="class">	<span class="keyword">implements</span> <span class="title">Map</span>&lt;<span class="title">K</span>, <span class="title">V</span>&gt;, <span class="title">Cloneable</span>, <span class="title">Serializable</span></span></span><br></pre></td></tr></table></figure>
 <ul>
 <li><p>AbstractMap：实现了Map接口，实现了Map的get，container等方法，不过很多都被HashMap重写</p>
@@ -198,8 +198,7 @@
 <li><p>Serializable：标记接口，可被默认的序列化机制序列化与反序列化</p>
 </li>
 </ul>
-<p>这里会让人生成疑惑的是浅拷贝的部分，为什么Arraylist是浅拷贝呢？我们贴出源码<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">clone</span><span class="params">()</span> </span>&#123;</span><br><span class="line">       <span class="keyword">try</span> &#123;</span><br><span class="line">       	<span class="comment">//1 生成ArrayList</span></span><br><span class="line">           ArrayList&lt;?&gt; v = (ArrayList&lt;?&gt;) <span class="keyword">super</span>.clone();</span><br><span class="line">          	<span class="comment">//2 复制其内所有元素</span></span><br><span class="line">           v.elementData = Arrays.copyOf(elementData, size);</span><br><span class="line">           v.modCount = <span class="number">0</span>;</span><br><span class="line">           <span class="keyword">return</span> v;</span><br><span class="line">       &#125; <span class="keyword">catch</span> (CloneNotSupportedException e) &#123;</span><br><span class="line">           <span class="comment">// this shouldn't happen, since we are Cloneable</span></span><br><span class="line">           <span class="keyword">throw</span> <span class="keyword">new</span> InternalError(e);</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure></p>
-<p>区分浅拷贝和深拷贝的一个很重要的标准是：拷贝对象的元素和原对象的元素是不是相同。这里从2可知道，虽然生成了新的ArrayList，可是其内的数组对象还是与原对象相同。</p>
+<p>###</p>
 
     </article>
     <!-- 前后页  -->
@@ -302,6 +301,10 @@
     <div class="sidebar-content sidebar-content-show-archive">
           <div class="sidebar-archive">
     <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
     
     
     
