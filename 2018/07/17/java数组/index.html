@@ -205,7 +205,7 @@
 </li>
 </ul>
 <h2 id="主要内容："><a href="#主要内容：" class="headerlink" title="主要内容："></a>主要内容：</h2><p><img src="https://github.com/YanyeZhang/YanyeZhang.github.io/blob/master/images/ArrayList.png?raw=true" alt="内容大纲"></p>
-<h3 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h3><p>ArrayList采用的数据结构为：数组。数组在内存中会开辟一块连续的、大小相同的空间。也是基于此特性,数组的查询能实现O(1)的时间复杂度；</p>
+<h3 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h3><p>ArrayList采用的数据结构为：数组。数组在内存中会开辟一组连续的、大小相同的空间。也是基于此特性,数组的查询能实现O(1)的时间复杂度；</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">transient</span> Object[] elementData; <span class="comment">//内部数组</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">int</span> size; <span class="comment">//数组的长度</span></span><br></pre></td></tr></table></figure>
 <p>可以看到 elementData 是被 transient 修饰的所以在序列化的时候不会被保存，后面会讲到ArrayList为什么要这么处理。</p>
 <h3 id="数据操作"><a href="#数据操作" class="headerlink" title="数据操作"></a>数据操作</h3><h4 id="1-插入"><a href="#1-插入" class="headerlink" title="1. 插入"></a>1. 插入</h4><p>因为篇幅有限，这里只截取了最简单的 add(E e) 方法，其他插入方法的流程于此类似<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">add</span><span class="params">(E e)</span> </span>&#123;</span><br><span class="line">    <span class="comment">//1. 判断是否要扩容</span></span><br><span class="line">    ensureCapacityInternal(size + <span class="number">1</span>);  <span class="comment">// Increments modCount!!</span></span><br><span class="line">    <span class="comment">//2. 插入数据</span></span><br><span class="line">    <span class="comment">//3. size+1</span></span><br><span class="line">    elementData[size++] = e;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
@@ -222,7 +222,7 @@
 <li>用后位覆盖的方式，替换原位置的值</li>
 </ol>
 <p>以上内容中（2）中的 modCount++的作用是实现迭代器中的多线程操作校验也就是 <a href="https://github.com/YanyeZhang/YanyeZhang.github.io/2018/07/18/Java-中的-fast-fail-与-fast-safe-机制/" target="_blank" rel="noopener">fast-fail机制</a>；（5）其中调用了System.arraycopy方法，底层是用C实现，能快速的实现数组之间的复制。 </p>
-<p>我们会发现当ArrayList要remove一个元素的时候，是直接将后面的元素前移顶替，而不是仅仅将其置空。在日常开发中，我们经常会对ArrayList进行遍历操作。如果在正向遍历的情况下，删除数组的某个元素，会导致size变化。</p>
+<p>我们会发现当ArrayList要remove一个元素的时候，是直接将后面的元素前移顶替，而不是仅仅将其置空。在日常开发中，我们经常会对ArrayList进行遍历操作。如果在正向遍历的情况下，删除数组的某个元素，会导致异常，因为数据索引已经不准确。</p>
 <p>同时，我们会发现当删除一个元素的时候，尽管是调用了C层来实现，可是一样是需要O(n)的时间复杂度。</p>
 <h4 id="3-查询"><a href="#3-查询" class="headerlink" title="3. 查询"></a>3. 查询</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> E <span class="title">get</span><span class="params">(<span class="keyword">int</span> index)</span> </span>&#123;</span><br><span class="line">       <span class="comment">//1. 判断是否超过数据最大长度</span></span><br><span class="line">       <span class="keyword">if</span> (index &gt;= size)</span><br><span class="line">           <span class="keyword">throw</span> <span class="keyword">new</span> IndexOutOfBoundsException(outOfBoundsMsg(index));</span><br><span class="line">       <span class="comment">//2. 获取指定位置上的值</span></span><br><span class="line">       <span class="keyword">return</span> (E) elementData[index];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>查询的部分没有太多值得深入的部分。就是通过索引获取值</p>
@@ -369,6 +369,8 @@
     <div class="sidebar-content sidebar-content-show-archive">
           <div class="sidebar-archive">
     <!-- 在ejs中将archive按照时间排序 -->
+    
+    
     
     
     
