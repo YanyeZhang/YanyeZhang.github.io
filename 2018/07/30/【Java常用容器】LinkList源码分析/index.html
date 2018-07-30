@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
     <title>
         
-        走川博客
+        【Java常用容器】LinkedList源码分析 · 走川博客
         
     </title>
     <link rel="icon" href= /assests/favicon.ico>
@@ -60,13 +60,22 @@
     
 </head>
     
-        <body class="home-body">
+        <body class="post-body">
     
     
-<header class="header index-header">
+<header class="header">
 
     <div class="header-sidebar-menu">&#xe775;</div>
     <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >YY&#39;s Studio.</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">【Java常用容器】LinkedList源码分析</a>
+            </div>
+    </div>
     
     <a class="home-link" href=/>YY's Studio.</a>
 </header>
@@ -76,17 +85,17 @@
     <!-- 主页  -->
     
     
-    <!-- 文章页  -->
+    <!-- 404页  -->
             
-    <div class="site-intro-img" style="background-image: url(http://oumn0o088.bkt.clouddn.com/intro-desktop.jpg)"></div>
+    <div class="site-intro-img" style="background-image: url(http://oumn0o088.bkt.clouddn.com/post-bg.jpg)"></div>
     <div class="site-intro-placeholder"></div>
     <div class="site-intro-meta">
         <!-- 标题  -->
         <h1 class="intro-title">
             <!-- 主页  -->
             
-            YY's Studio.
-            <!-- 文章页  -->
+            【Java常用容器】LinkedList源码分析
+            <!-- 404 -->
             
         </h1>
         <!-- 副标题 -->
@@ -94,12 +103,17 @@
             <!-- 主页副标题  -->
             
             
-                tody than yestoday a little progress
-            
-            <!-- 文章页  -->
+            <!-- 404 -->
             
         </p>
         <!-- 文章页meta -->
+        
+            <!-- 文章页标签  -->
+            
+            <div class="post-intro-meta">
+                <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                <span class="post-intro-time">2018/07/30</span>
+            </div>
         
     </div>
 </div>
@@ -167,207 +181,66 @@
             }
         </script>
         <div class="container container-unloaded">
-            <main class="main index-page">
-    
-    
-    
-        <article class="index-post">
-            <a class="content-show-full" href = "/2018/07/30/【Java常用容器】LinkList源码分析/" >
-                    <h2 class="abstract-title">
-                        
-                        <span>【Java常用容器】LinkedList源码分析</span>
-                    </h2>
-                <div class="abstract-content">
-                     阅读提醒：将本文结合源码一起使用味道更佳哦！~
-前言LinkedList在很多源码中被广泛的使用。大家常将它与ArrayList做对比，二者不论是从数据结构还是实现逻辑上都很大的差异。希望通过本文能让大家在需要列表存储的时候能更好的选择适应场景的容易。
-类定义：123public class LinkedList&lt;E&gt;   	extends AbstractSequential...
-                </div>
-            </a>
-            <div class="abstract-post-meta">
-                <!-- tags  -->
-                
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2018/07/30</span>
-                </div>
-            </div>
-        </article>
-    
-    
-    
-        <article class="index-post">
-            <a class="content-show-full" href = "/2018/07/23/最熟悉的陌生人—HashMap/" >
-                    <h2 class="abstract-title">
-                        
-                        <span>【Java常用容器】HashMap源码分析</span>
-                    </h2>
-                <div class="abstract-content">
-                     阅读提醒：将本文结合源码一起使用味道更佳哦！~
-前言 上一章写到ArrayList的源码分析，而本篇将会对同样是最常用的容器之一的HashMap来进行分析。之前面试求职者，经常会问到HashMap的底层数据结构的部分。很多人只回答出是“哈希表”。因此特意引用网上哈希表的定义：
+            <main class="main post-page">
+    <article class="article-entry">
+        <script src="/assets/js/APlayer.min.js"> </script><p><strong>阅读提醒</strong>：将本文结合源码一起使用味道更佳哦！~</p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>LinkedList在很多源码中被广泛的使用。大家常将它与ArrayList做对比，二者不论是从数据结构还是实现逻辑上都很大的差异。希望通过本文能让大家在需要列表存储的时候能更好的选择适应场景的容易。</p>
+<h2 id="类定义："><a href="#类定义：" class="headerlink" title="类定义："></a>类定义：</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">LinkedList</span>&lt;<span class="title">E</span>&gt;</span></span><br><span class="line"><span class="class">   	<span class="keyword">extends</span> <span class="title">AbstractSequentialList</span>&lt;<span class="title">E</span>&gt;</span></span><br><span class="line"><span class="class">   	<span class="keyword">implements</span> <span class="title">List</span>&lt;<span class="title">E</span>&gt;, <span class="title">Deque</span>&lt;<span class="title">E</span>&gt;, <span class="title">Cloneable</span>, <span class="title">java</span>.<span class="title">io</span>.<span class="title">Serializable</span></span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>AbstractSequentialList：AbstractList的子类（ArrayList也是其子类之一），实现一些基本的get/add方法，不过很多方法被已经被LinkedList复写。</p>
+</li>
+<li><p>Deque：双端队列，即可以选择从头部或者从尾部进行数据操作</p>
+</li>
+<li><p>Cloneable：标记接口，声明LinkedList重写clone方法。这里LinkedList实现的是浅拷贝，即复制内部链表元素</p>
+</li>
+<li><p>Serializable：标记接口，可被默认的序列化机制序列化与反序列化</p>
+</li>
+</ul>
+<h2 id="主要内容："><a href="#主要内容：" class="headerlink" title="主要内容："></a>主要内容：</h2>
+    </article>
+    <!-- 前后页  -->
+    <ul class="post-pager">
+        
+        
+            <li class="previous">
+                <a href= "/2018/07/23/最熟悉的陌生人—HashMap/" title= 【Java常用容器】HashMap源码分析 >
+                    <span>Previous Post</span>
+                    <span>【Java常用容器】HashMap源码分析</span>
+                </a>
+            </li>
+        
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
 
-散列表（Hash table，也叫哈希表），是根据关键码值(Key value)而直接进行访问的数据结构。也就是...
-                </div>
-            </a>
-            <div class="abstract-post-meta">
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-href = Java>Java</a>
-    
-</div>
-                
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2018/07/23</span>
-                </div>
-            </div>
-        </article>
+<!-- City版安装代码已完成 -->
     
     
-    
-        <article class="index-post">
-            <a class="content-show-full" href = "/2018/07/17/java数组/" >
-                    <h2 class="abstract-title">
-                        
-                        <span>【Java常用容器】ArrayList源码分析 </span>
-                    </h2>
-                <div class="abstract-content">
-                     阅读提醒：将本文结合源码一起使用味道更佳哦！~
-前言
-ArrayList 是我们最常用的一个集合类之一。了解它的实现，有助于我们理解自己写下的代码背后更深层次的逻辑。同时也能从其中学习到JDK的设计思想。
+<div id="container"></div>
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+    var gitment = new Gitment({
+        id: "【Java常用容器】LinkedList源码分析", // 可选。默认为 location.href
+        owner: 'YanyeZhang',
+        repo: 'YanyeZhang.github.io',
+        oauth: {
+            client_id: 'dbaed912e5b7c0480a2f',
+            client_secret: 'f8eca7690f60152569c598b05df04fe885e17a4b',
+        },
+    })
+    gitment.render('container')
 
-类定义：12public class ArrayList&lt;E&gt; extends AbstractList&lt;E&gt;        implements List&l...
-                </div>
-            </a>
-            <div class="abstract-post-meta">
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-href = Java>Java</a>
-    
-</div>
-                
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2018/07/17</span>
-                </div>
-            </div>
-        </article>
-    
-    
-    
-        <article class="index-post">
-            <a class="content-show-full" href = "/2017/12/19/Scrapy入门实现—懒人追书/" >
-                    <h2 class="abstract-title">
-                        
-                        <span>追书神器（一）—Scrapy入门</span>
-                    </h2>
-                <div class="abstract-content">
-                     前言看小说是我这么多年来一直保持的习惯。《盘龙》、《斗破苍穹》、《仙逆》、《凡人修仙传》等等，陪伴了我整个学生时代。最近发现iOS上小说类app体验都不好，经常出现广告弹出、更新不及时、强制分享等情况。于是在一个下雨的晚上，我决定不再忍受这些app，自己强撸一个追书爬虫。
-Scrapy介绍Scrapy是python主流爬虫框架，可以很方便的通过url抓取web信息，同时与传统的reques...
-                </div>
-            </a>
-            <div class="abstract-post-meta">
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-href = python>python</a>
-    
-</div>
-                
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2017/12/19</span>
-                </div>
-            </div>
-        </article>
-    
-    
-    
-        <article class="index-post">
-            <a class="content-show-full" href = "/2017/12/18/yield关键字理解/" >
-                    <h2 class="abstract-title">
-                        
-                        <span>理解关键字—yield</span>
-                    </h2>
-                <div class="abstract-content">
-                     前言为了方便追小说更新撸了一个基于scrapy的爬虫。在实现过程中使用到了 yield，网上对其的文字描述都很难让人理解。通过Debug代码才了解调用顺序，进而理解了它使用方法。
-概念理解yield作用我们可以用一个等式来形容其作用：
+</script>
 
-yeild 函数 = return 生成器（generator）
+    <!--PC版-->
 
-什么是生成器
-生成器  =  可迭代的函数
+    <!--PC版-->
 
-正常情况下我们可以这样迭代一个列表123...
-                </div>
-            </a>
-            <div class="abstract-post-meta">
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-href = python>python</a>
-    
-</div>
-                
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2017/12/18</span>
-                </div>
-            </div>
-        </article>
-    
-    <!-- paginator  -->
+
     
 </main>
             <!-- profile -->
-            
-            <div class="profile">
-    <img class="profile-avatar" src= /avatar/wechat.jpg >
-    <div class="profile-name">走川</div>
-    
-    <div class="profile-signature">
-        非典型程序员
-    </div>
-    
-    
-    <div class="profile-social">
-        
-    
-        
-            
-                <a href="mailto:yanye_zhang@163.com" class="iconfont-archer email" title=email ></a>
-            
-        
-    
-        
-            
-                <a href="//github.com/YanyeZhang" class="iconfont-archer github" target="_blank" title="github"></a>
-            
-        
-    
-        
-            
-                <a href="https://weibo.com/u/3282122551" class="iconfont-archer weibo" target="_blank" title="weibo"></a>
-            
-        
-    
-
-    </div>
-    
-    
-    
-        <div class="about-me">
-            <div>
-                <a href = "/about" >ABOUT ME</a>
-            </div>
-        </div>
-    
-</div>
             
         </div>
         <footer class="footer footer-unloaded">
@@ -406,6 +279,13 @@ yeild 函数 = return 生成器（generator）
 </footer>
     </div>
     <!-- toc -->
+    
+    <div class="toc-wrapper">
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text"><a href="#&#x524D;&#x8A00;" class="headerlink" title="&#x524D;&#x8A00;"></a>&#x524D;&#x8A00;</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#类定义："><span class="toc-number">2.</span> <span class="toc-text"><a href="#&#x7C7B;&#x5B9A;&#x4E49;&#xFF1A;" class="headerlink" title="&#x7C7B;&#x5B9A;&#x4E49;&#xFF1A;"></a>&#x7C7B;&#x5B9A;&#x4E49;&#xFF1A;</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#主要内容："><span class="toc-number">3.</span> <span class="toc-text"><a href="#&#x4E3B;&#x8981;&#x5185;&#x5BB9;&#xFF1A;" class="headerlink" title="&#x4E3B;&#x8981;&#x5185;&#x5BB9;&#xFF1A;"></a>&#x4E3B;&#x8981;&#x5185;&#x5BB9;&#xFF1A;</span></a></li></ol>
+    </div>
     
     <div class="back-top">&#xe639;</div>
     <div class="sidebar">
