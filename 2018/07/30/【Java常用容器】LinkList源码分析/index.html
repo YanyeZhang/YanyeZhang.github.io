@@ -273,7 +273,7 @@
 </blockquote>
 <p>因此虽然生成了新的LinkedList，可是其内的数组对象引用还是与原对象相同。因此是浅拷贝无疑了。</p>
 <h3 id="fast-fail"><a href="#fast-fail" class="headerlink" title="fast-fail"></a>fast-fail</h3><p>fast-fail 的主要作用是用来校验在某些操作（常为多线程操作）的过程中，元素是否被修改，如果被修改就报ConcurrentModificationException的错误。在LinkedList或其他容器中 一般实现是由expectedModCount 与 modCount 进行对比，来保证元素没有被操作过。<br>就这部分的内容，是具有通用性的，在java.util中被广泛使用，如HashMap等。我将另开章节<a href="https://github.com/YanyeZhang/YanyeZhang.github.io/2018/07/18/Java-中的-fast-fail-与-fast-safe-机制/" target="_blank" rel="noopener">fast-fail机制</a>来绍</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>linkedList</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>LinkedList 经常与ArrayList作为对比，两者最大的差异来源于底层的数据结构。这里附加一个连接<a href="https://www.cnblogs.com/Amedeo/p/7885146.html" target="_blank" rel="noopener">ArrayList和LinkedList的区别</a>，有助于大家加深对2者的印象。</p>
 
     </article>
     <!-- 前后页  -->
@@ -425,6 +425,8 @@
     
     
     
+    
+    
     <div class="total-archive"> Total : 5 </div>
     
     <div class="post-archive">
@@ -474,9 +476,9 @@
         <div class="sidebar-tags">
     <div class="sidebar-tags-name">
     
-        <span class="sidebar-tag-name"><a href= "#">python</a></span>
-    
         <span class="sidebar-tag-name"><a href= "#">Java</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">python</a></span>
     
     </div>
     <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
