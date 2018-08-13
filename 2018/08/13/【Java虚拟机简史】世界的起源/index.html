@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
     <title>
         
-        走川博客
+        【Java虚拟机简史】万物的DNA—Class文件 · 走川博客
         
     </title>
     <link rel="icon" href= /assests/favicon.ico>
@@ -60,11 +60,22 @@
     
 </head>
     
+        <body class="post-body">
+    
     
 <header class="header">
 
     <div class="header-sidebar-menu">&#xe775;</div>
     <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >YY&#39;s Studio.</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">【Java虚拟机简史】万物的DNA—Class文件</a>
+            </div>
+    </div>
     
     <a class="home-link" href=/>YY's Studio.</a>
 </header>
@@ -72,21 +83,37 @@
         <div class="site-intro">
     
     <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
             
-    <div class="site-intro-img" style="background-image: url(/)"></div>
+    <div class="site-intro-img" style="background-image: url(http://oumn0o088.bkt.clouddn.com/post-bg.jpg)"></div>
     <div class="site-intro-placeholder"></div>
     <div class="site-intro-meta">
         <!-- 标题  -->
         <h1 class="intro-title">
             <!-- 主页  -->
             
+            【Java虚拟机简史】万物的DNA—Class文件
+            <!-- 404 -->
+            
         </h1>
         <!-- 副标题 -->
         <p class="intro-subtitle">
             <!-- 主页副标题  -->
             
+            
+            <!-- 404 -->
+            
         </p>
         <!-- 文章页meta -->
+        
+            <!-- 文章页标签  -->
+            
+            <div class="post-intro-meta">
+                <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                <span class="post-intro-time">2018/08/13</span>
+            </div>
         
     </div>
 </div>
@@ -154,214 +181,63 @@
             }
         </script>
         <div class="container container-unloaded">
-            <main class="main index-page">
-    
-    
-    
-        <article class="index-post">
-            <a class="content-show-full" href = "/2018/08/13/【Java虚拟机简史】世界的起源/" >
-                    <h2 class="abstract-title">
-                        
-                        <span>【Java虚拟机简史】万物的DNA—Class文件</span>
-                    </h2>
-                <div class="abstract-content">
-                     就如同在现实生活中每种生物都有自己的独特DNA一样，虚拟机世界中每个对象都拥有自己的DNA——Class文件。
-Class文件的由来在了解之前class文件之前，我们必须要明白为什么会有class文件。
-在C/C++的时代，为了解决平台移植，开发者们必须在不同的操作系统编译相对应的文件。因为每个操作系统的CPU指令集机都是不同的，而为了提供C/C++的运行环境，分别实现了C/C++的标准运...
-                </div>
-            </a>
-            <div class="abstract-post-meta">
-                <!-- tags  -->
-                
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2018/08/13</span>
-                </div>
-            </div>
-        </article>
-    
-    
-    
-        <article class="index-post">
-            <a class="content-show-full" href = "/2018/08/02/【Android-Jetpack】/" >
-                    <h2 class="abstract-title">
-                        
-                        <span>【Android Jetpack】ViewModel 源码分析</span>
-                    </h2>
-                <div class="abstract-content">
-                     
+            <main class="main post-page">
+    <article class="article-entry">
+        <script src="/assets/js/APlayer.min.js"> </script><p>就如同在现实生活中每种生物都有自己的独特DNA一样，虚拟机世界中每个对象都拥有自己的DNA——Class文件。</p>
+<h3 id="Class文件的由来"><a href="#Class文件的由来" class="headerlink" title="Class文件的由来"></a>Class文件的由来</h3><p>在了解之前class文件之前，我们必须要明白为什么会有class文件。</p>
+<p>在C/C++的时代，为了解决平台移植，开发者们必须在不同的操作系统编译相对应的文件。因为每个操作系统的CPU指令集机都是不同的，而为了提供C/C++的运行环境，分别实现了C/C++的标准运行库。</p>
+<p><img src="/images/pasted-26.png" alt="upload successful"></p>
+<p>针对每个平台生成的可执行文件，只能在该平台上运行，因为其内部的指令不同。还记得高中从游民星空下载游戏的时候都要区分是x86还是x64。就是这个原因。</p>
+<p>而Java的口号是：“Write Once，Run Anywhere”。其充分吸取了C/C++的教训，采用了字节码（*.class）与虚拟机的结合方式。将平台层面上差异处理交给JVM，而不需要经过开发者。现在打着同样口号的weex在实现思路上也一脉相承。</p>
+<p><img src="/images/pasted-28.png" alt="upload successful"></p>
+<p>这样的机构虽然解决了跨平台，可是同样引进了新的问题——性能。在C/C++中最后生成的可执行文件是本地机器码，而Java中，由于为了避免平台差异的问题，统一用字节码作为程序存储媒介。而这样代价就是在运行的过程是需要转译步骤的。即</p>
+<blockquote>
+<p>字节码 -&gt; 本地机器码</p>
+</blockquote>
+<p>不过在后期Java也衍生出了即时编译器，在运行时，直接将热点字节码转换为本地机器码。</p>
+<h3 id="Class文件构成"><a href="#Class文件构成" class="headerlink" title="Class文件构成"></a>Class文件构成</h3><p>在自然界中，DNA是一种长链聚合物，组成单位为四种脱氧核苷酸，上面有成千上万的基因片段，决定着生物的性状。而Class文件则是一种约定俗称固定结构，里面包含着Class版本信息，常量池，访问标识，字段集合等类信息，同样决定着实例化之后对象的状态。</p>
 
-                </div>
-            </a>
-            <div class="abstract-post-meta">
-                <!-- tags  -->
-                
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2018/08/02</span>
-                </div>
-            </div>
-        </article>
-    
-    
-    
-        <article class="index-post">
-            <a class="content-show-full" href = "/2018/07/30/【Java常用容器】LinkList源码分析/" >
-                    <h2 class="abstract-title">
-                        
-                        <span>【Java常用容器】LinkedList源码分析</span>
-                    </h2>
-                <div class="abstract-content">
-                     阅读提醒：将本文结合源码一起使用味道更佳哦！~
-前言LinkedList在很多源码中被广泛的使用。大家常将它与ArrayList做对比，二者不论是从数据结构还是实现逻辑上都很大的差异。希望通过本文能让大家在类似需要线性存储数据的场景下能更好的选择适应容器。
-类定义123public class LinkedList&lt;E&gt;   	extends AbstractSequentia...
-                </div>
-            </a>
-            <div class="abstract-post-meta">
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-href = Java>Java</a>
-    
-</div>
-                
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2018/07/30</span>
-                </div>
-            </div>
-        </article>
-    
-    
-    
-        <article class="index-post">
-            <a class="content-show-full" href = "/2018/07/23/最熟悉的陌生人—HashMap/" >
-                    <h2 class="abstract-title">
-                        
-                        <span>【Java常用容器】HashMap源码分析</span>
-                    </h2>
-                <div class="abstract-content">
-                     阅读提醒：将本文结合源码一起使用味道更佳哦！~
-前言 上一章写到ArrayList的源码分析，而本篇将会对同样是最常用的容器之一的HashMap来进行分析。之前面试求职者，经常会问到HashMap的底层数据结构的部分。很多人只回答出是“哈希表”。因此特意引用网上哈希表的定义：
+    </article>
+    <!-- 前后页  -->
+    <ul class="post-pager">
+        
+        
+            <li class="previous">
+                <a href= "/2018/08/02/【Android-Jetpack】/" title= 【Android Jetpack】ViewModel 源码分析 >
+                    <span>Previous Post</span>
+                    <span>【Android Jetpack】ViewModel 源码分析</span>
+                </a>
+            </li>
+        
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
 
-散列表（Hash table，也叫哈希表），是根据关键码值(Key value)而直接进行访问的数据结构。也就是...
-                </div>
-            </a>
-            <div class="abstract-post-meta">
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-href = Java>Java</a>
-    
-</div>
-                
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2018/07/23</span>
-                </div>
-            </div>
-        </article>
+<!-- City版安装代码已完成 -->
     
     
-    
-        <article class="index-post">
-            <a class="content-show-full" href = "/2018/07/17/java数组/" >
-                    <h2 class="abstract-title">
-                        
-                        <span>【Java常用容器】ArrayList源码分析 </span>
-                    </h2>
-                <div class="abstract-content">
-                     阅读提醒：将本文结合源码一起使用味道更佳哦！~
-前言
-ArrayList 是我们最常用的一个集合类之一。了解它的实现，有助于我们理解自己写下的代码背后更深层次的逻辑。同时也能从其中学习到JDK的设计思想。
+<div id="container"></div>
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+    var gitment = new Gitment({
+        id: "【Java虚拟机简史】万物的DNA—Class文件", // 可选。默认为 location.href
+        owner: 'YanyeZhang',
+        repo: 'YanyeZhang.github.io',
+        oauth: {
+            client_id: 'dbaed912e5b7c0480a2f',
+            client_secret: 'f8eca7690f60152569c598b05df04fe885e17a4b',
+        },
+    })
+    gitment.render('container')
 
-类定义12public class ArrayList&lt;E&gt; extends AbstractList&lt;E&gt;        implements List&lt...
-                </div>
-            </a>
-            <div class="abstract-post-meta">
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-href = Java>Java</a>
-    
-</div>
-                
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2018/07/17</span>
-                </div>
-            </div>
-        </article>
-    
-    
-    
-        <article class="index-post">
-            <a class="content-show-full" href = "/2017/12/19/Scrapy入门实现—懒人追书/" >
-                    <h2 class="abstract-title">
-                        
-                        <span>追书神器（一）—Scrapy入门</span>
-                    </h2>
-                <div class="abstract-content">
-                     前言看小说是我这么多年来一直保持的习惯。《盘龙》、《斗破苍穹》、《仙逆》、《凡人修仙传》等等，陪伴了我整个学生时代。最近发现iOS上小说类app体验都不好，经常出现广告弹出、更新不及时、强制分享等情况。于是在一个下雨的晚上，我决定不再忍受这些app，自己强撸一个追书爬虫。
-Scrapy介绍Scrapy是python主流爬虫框架，可以很方便的通过url抓取web信息，同时与传统的reques...
-                </div>
-            </a>
-            <div class="abstract-post-meta">
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-href = python>python</a>
-    
-</div>
-                
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2017/12/19</span>
-                </div>
-            </div>
-        </article>
-    
-    
-    
-        <article class="index-post">
-            <a class="content-show-full" href = "/2017/12/18/yield关键字理解/" >
-                    <h2 class="abstract-title">
-                        
-                        <span>理解关键字—yield</span>
-                    </h2>
-                <div class="abstract-content">
-                     前言为了方便追小说更新撸了一个基于scrapy的爬虫。在实现过程中使用到了 yield，网上对其的文字描述都很难让人理解。通过Debug代码才了解调用顺序，进而理解了它使用方法。
-概念理解yield作用我们可以用一个等式来形容其作用：
+</script>
 
-yeild 函数 = return 生成器（generator）
+    <!--PC版-->
 
-什么是生成器
-生成器  =  可迭代的函数
+    <!--PC版-->
 
-正常情况下我们可以这样迭代一个列表123...
-                </div>
-            </a>
-            <div class="abstract-post-meta">
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-href = python>python</a>
-    
-</div>
-                
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2017/12/18</span>
-                </div>
-            </div>
-        </article>
-    
-    <!-- paginator  -->
+
     
 </main>
             <!-- profile -->
@@ -403,6 +279,13 @@ yeild 函数 = return 生成器（generator）
 </footer>
     </div>
     <!-- toc -->
+    
+    <div class="toc-wrapper">
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Class文件的由来"><span class="toc-number">1.</span> <span class="toc-text"><a href="#Class&#x6587;&#x4EF6;&#x7684;&#x7531;&#x6765;" class="headerlink" title="Class&#x6587;&#x4EF6;&#x7684;&#x7531;&#x6765;"></a>Class&#x6587;&#x4EF6;&#x7684;&#x7531;&#x6765;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Class文件构成"><span class="toc-number">2.</span> <span class="toc-text"><a href="#Class&#x6587;&#x4EF6;&#x6784;&#x6210;" class="headerlink" title="Class&#x6587;&#x4EF6;&#x6784;&#x6210;"></a>Class&#x6587;&#x4EF6;&#x6784;&#x6210;</span></a></li></ol>
+    </div>
     
     <div class="back-top">&#xe639;</div>
     <div class="sidebar">
