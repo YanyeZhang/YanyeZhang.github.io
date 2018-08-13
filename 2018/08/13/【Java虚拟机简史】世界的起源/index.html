@@ -184,6 +184,7 @@
             <main class="main post-page">
     <article class="article-entry">
         <script src="/assets/js/APlayer.min.js"> </script><p>就如同在现实生活中每种生物都有自己的独特DNA一样，虚拟机世界中每个对象都拥有自己的DNA——Class文件。</p>
+<p><img src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1534160073182&amp;di=be2ffb54269b1314db48e75831e554d2&amp;imgtype=0&amp;src=http%3A%2F%2Fimg0.ph.126.net%2F5eBCgAZx0I6hxigZsSuK7Q%3D%3D%2F4940167316348923917.jpg" alt=""></p>
 <h3 id="Class文件的由来"><a href="#Class文件的由来" class="headerlink" title="Class文件的由来"></a>Class文件的由来</h3><p>在了解之前class文件之前，我们必须要明白为什么会有class文件。</p>
 <p>在C/C++的时代，为了解决平台移植，开发者们必须在不同的操作系统编译相对应的文件。因为每个操作系统的CPU指令集机都是不同的，而为了提供C/C++的运行环境，分别实现了C/C++的标准运行库。</p>
 <p><img src="/images/pasted-26.png" alt="upload successful"></p>
@@ -195,7 +196,12 @@
 <p>字节码 -&gt; 本地机器码</p>
 </blockquote>
 <p>不过在后期Java也衍生出了即时编译器，在运行时，直接将热点字节码转换为本地机器码。</p>
-<h3 id="Class文件构成"><a href="#Class文件构成" class="headerlink" title="Class文件构成"></a>Class文件构成</h3><p>在自然界中，DNA是一种长链聚合物，组成单位为四种脱氧核苷酸，上面有成千上万的基因片段，决定着生物的性状。而Class文件则是一种约定俗称固定结构，里面包含着Class版本信息，常量池，访问标识，字段集合等类信息，同样决定着实例化之后对象的状态。</p>
+<h3 id="Class文件构成"><a href="#Class文件构成" class="headerlink" title="Class文件构成"></a>Class文件构成</h3><p>在自然界中，DNA是一种长链聚合物，组成单位为四种脱氧核苷酸，上面有成千上万的基因片段，决定着生物的性状。</p>
+<p>在虚拟机世界中，Class文件则是一段约定俗称的紧密固定结构，里面包含着Class版本信息，常量池，访问标识，字段集合等类信息。同样决定着实例化之后对象的状态。</p>
+<p>接下来将会用以下代码为例，慢慢深入的了解“虚拟机世界的DNA”<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloWorld</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span> </span>&#123;</span><br><span class="line">        System.out.print(<span class="string">"hello"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">increase</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        count++;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>用javac指令编译之后，打开生成的 HelloWorld.class</p>
+<p><img src="/images/pasted-29.png" alt="upload successful"></p>
+<p>这是一堆看不懂的字节码，不过就像需要拿着基因表达谱翻译基因片段一样。我们也需要用其固定的解析格式去解读它</p>
 
     </article>
     <!-- 前后页  -->
@@ -434,9 +440,9 @@
         <div class="sidebar-tags">
     <div class="sidebar-tags-name">
     
-        <span class="sidebar-tag-name"><a href= "#">Java</a></span>
-    
         <span class="sidebar-tag-name"><a href= "#">python</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">Java</a></span>
     
     </div>
     <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
