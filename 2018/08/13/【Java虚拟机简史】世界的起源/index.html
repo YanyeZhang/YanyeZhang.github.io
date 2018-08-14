@@ -424,7 +424,19 @@
 <p>现在我们以上常量池做个demo。</p>
 <p><img src="/images/pasted-34.png" alt="upload successful"><br>我们看到 #4 与 #5 为CONSTANT_Class_info 信息，因此在字节码中肯定存在 0004 0005 的片段。如下所示</p>
 <p><img src="/images/pasted-35.png" alt="upload successful"></p>
-<h4 id="5-字段表"><a href="#5-字段表" class="headerlink" title="5.字段表"></a>5.字段表</h4>
+<h4 id="5-字段表"><a href="#5-字段表" class="headerlink" title="5.字段表"></a>5.字段表</h4><p>字段表用于描述接口或者类中声明的变量（不包括局部变量）。里面包含着字段以下内容</p>
+<ol>
+<li>作用域（public、private、protected）；</li>
+<li>是否为静态变量 (static)；</li>
+<li>可变性（final）；</li>
+<li>并发可见性（volatile：强制从主内存中读写）；</li>
+<li>是否可以被序列化；</li>
+<li>字段类型；</li>
+<li>字段名称；</li>
+</ol>
+<p>我们看看刚才Javap反编译关于字段表的结果</p>
+<p><img src="/images/pasted-38.png" alt="upload successful"></p>
+
     </article>
     <!-- 前后页  -->
     <ul class="post-pager">
@@ -526,6 +538,10 @@
     <div class="sidebar-content sidebar-content-show-archive">
           <div class="sidebar-archive">
     <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
     
     
     
