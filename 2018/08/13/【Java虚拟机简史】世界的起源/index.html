@@ -188,21 +188,243 @@
 <h3 id="Class文件的由来"><a href="#Class文件的由来" class="headerlink" title="Class文件的由来"></a>Class文件的由来</h3><p>在了解之前class文件之前，我们必须要明白为什么会有class文件。</p>
 <p>在C/C++的时代，为了解决平台移植，开发者们必须在不同的操作系统编译相对应的文件。因为每个操作系统的CPU指令集机都是不同的，而为了提供C/C++的运行环境，分别实现了C/C++的标准运行库。</p>
 <p><img src="/images/pasted-26.png" alt="upload successful"></p>
-<p>针对每个平台生成的可执行文件，只能在该平台上运行，因为其内部的指令不同。还记得高中从游民星空下载游戏的时候都要区分是x86还是x64。就是这个原因。</p>
+<p>针对每个平台生成的可执行文件，只能在该平台上运行，因为其内部的指令不同。还记得高中从游民星空下载游戏的时候都要区分是x86还是x64么？就是这个原因。</p>
 <p>而Java的口号是：“Write Once，Run Anywhere”。其充分吸取了C/C++的教训，采用了字节码（*.class）与虚拟机的结合方式。将平台层面上差异处理交给JVM，而不需要经过开发者。现在打着同样口号的weex在实现思路上也一脉相承。</p>
 <p><img src="/images/pasted-28.png" alt="upload successful"></p>
 <p>这样的机构虽然解决了跨平台，可是同样引进了新的问题——性能。在C/C++中最后生成的可执行文件是本地机器码，而Java中，由于为了避免平台差异的问题，统一用字节码作为程序存储媒介。而这样代价就是在运行的过程是需要转译步骤的。即</p>
 <blockquote>
 <p>字节码 -&gt; 本地机器码</p>
 </blockquote>
-<p>不过在后期Java也衍生出了即时编译器，在运行时，直接将热点字节码转换为本地机器码。</p>
-<h3 id="Class文件构成"><a href="#Class文件构成" class="headerlink" title="Class文件构成"></a>Class文件构成</h3><p>在自然界中，DNA是一种长链聚合物，组成单位为四种脱氧核苷酸，上面有成千上万的基因片段，决定着生物的性状。</p>
+<p>不过在后期Java也衍生出了即时编译器，在运行时，直接将热点字节码转换为本地机器码。一定程度上缓解了被人诟病的缺点。</p>
+<h3 id="Class文件构成"><a href="#Class文件构成" class="headerlink" title="Class文件构成"></a>Class文件构成</h3><p>在自然界中，DNA是一种长链聚合物，上面有成千上万的基因片段，决定着生物的性状。</p>
 <p>在虚拟机世界中，Class文件则是一段约定俗称的紧密固定结构，里面包含着Class版本信息，常量池，访问标识，字段集合等类信息。同样决定着实例化之后对象的状态。</p>
-<p>接下来将会用以下代码为例，慢慢深入的了解“虚拟机世界的DNA”<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloWorld</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> count = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span> </span>&#123;</span><br><span class="line">        System.out.print(<span class="string">"hello"</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">increase</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        count++;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p><img src="/images/pasted-36.png" alt="upload successful"></p>
+<p>我们可以先看看Class文件编译后的样子，到底是怎么样的。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloWorld</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    String demo = <span class="string">"demo"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>用javac指令编译之后，打开生成的 HelloWorld.class</p>
-<p><img src="/images/pasted-29.png" alt="upload successful"></p>
-<p>这是一堆看不懂的字节码，不过就像需要拿着基因表达谱翻译基因片段一样。我们也需要用其固定的解析格式去解读它</p>
-
+<p><img src="/images/pasted-32.png" alt="upload successful"></p>
+<p>会发现这是一堆按照固定格式生成的字节码，不要觉得头疼，就像需要拿着基因表达谱翻译基因片段一样。我们只需要用其固定的解析模板就可以解读它。</p>
+<p>Class文件采用一种伪结构来存储数据，其中只有两种数据类型：无符号数和表。以u1、u2、u4来代表1个字节、2个字节、4个字节的无符号数。以”_info“结尾的为表。</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>名称</th>
+<th>数量</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>u4</td>
+<td>magic</td>
+<td>1</td>
+</tr>
+<tr>
+<td>u2</td>
+<td>minor_version</td>
+<td>1</td>
+</tr>
+<tr>
+<td>u2</td>
+<td>major_version</td>
+<td>1</td>
+</tr>
+<tr>
+<td>u2</td>
+<td>constant_pool_count</td>
+<td>1</td>
+</tr>
+<tr>
+<td>cp_info</td>
+<td>constant_pool</td>
+<td>constant_pool_count - 1</td>
+</tr>
+<tr>
+<td>u2</td>
+<td>access_flags</td>
+<td>1</td>
+</tr>
+<tr>
+<td>u2</td>
+<td>this_class</td>
+<td>1</td>
+</tr>
+<tr>
+<td>u2</td>
+<td>super_class</td>
+<td>1</td>
+</tr>
+<tr>
+<td>u2</td>
+<td>interfaces_count</td>
+<td>1</td>
+</tr>
+<tr>
+<td>u2</td>
+<td>interfaces</td>
+<td>interfaces_count</td>
+</tr>
+<tr>
+<td>u2</td>
+<td>fields_count</td>
+<td>1</td>
+</tr>
+<tr>
+<td>field_info</td>
+<td>fields</td>
+<td>fields_count</td>
+</tr>
+<tr>
+<td>u2</td>
+<td>methods_count</td>
+<td>1</td>
+</tr>
+<tr>
+<td>method_info</td>
+<td>methods</td>
+<td>methods_count</td>
+</tr>
+<tr>
+<td>u2</td>
+<td>attributes_count</td>
+<td>1</td>
+</tr>
+<tr>
+<td>attribute_info</td>
+<td>attributes</td>
+<td>attributes_count</td>
+</tr>
+</tbody>
+</table>
+<p>一个Class文件的结构就是按照这样的格式来分布，有兴趣的同学，可以对照着看看。</p>
+<h4 id="1-校验字节"><a href="#1-校验字节" class="headerlink" title="1.校验字节"></a>1.校验字节</h4><ul>
+<li>魔数（4字节）</li>
+</ul>
+<p>基于安全方面的考虑，JVM对类文件的头部统一要求加入这块魔数区域，在类的验证过程中会对此进行校验。</p>
+<blockquote>
+<p>为什么Java的logo上会有咖啡？</p>
+</blockquote>
+<p><img src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1534224345713&amp;di=85b6712ebca7187717a1b1a7ca2c1c9e&amp;imgtype=0&amp;src=http%3A%2F%2Fp.ananas.chaoxing.com%2Fstar3%2F733_434%2F55f04e62498ead65175aef56.jpg" alt=""></p>
+<p>据说是当时的开发小组的成员希望Java和Baristas咖啡一样深受欢迎，因此将这块区域定义为：cafe baby。后来在商标上也采用咖啡这个元素。</p>
+<ul>
+<li>Class文件版本信息（2字节 + 2字节）</li>
+</ul>
+<p>这块区域定义的是编译Class文件的JDK版本。这块区域又分为次版本号与主版本号。当JVM支持的JDK版本低于或等于Class要求的版本时候可以运行，而高于Class版本后则不能运行。</p>
+<h4 id="2-常量池"><a href="#2-常量池" class="headerlink" title="2.常量池"></a>2.常量池</h4><p>常量池会先告诉JVM自己的长度（constant_pool_size 为u2字节）,后面才会排布自己的常量。</p>
+<p>这一块区域在Class文件中常量池的地位相当重要。作用类似于Class文件中的114查号台。</p>
+<blockquote>
+<p>这个一个神奇的区域，找常量、找变量，找接口、找方法、找字段、找类，就在常量池！</p>
+</blockquote>
+<p><img src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1534231673475&amp;di=bb91ab3a4e6bc7ae7bbd98d4189836bd&amp;imgtype=0&amp;src=http%3A%2F%2Fwww.zyhl.com%2FUploadFiles%2Fimages%2F20150402104033076.jpg" alt=""></p>
+<p>常量池中主要存放两个类常量</p>
+<ol>
+<li>字面量</li>
+<li>符号引用</li>
+</ol>
+<p>这两个最后都是由 CONSTANT_XXX_info 这样的数据结构组成。</p>
+<table>
+<thead>
+<tr>
+<th>类型</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CONSTANT_Utf-8_info</td>
+<td>Utf-8编码的字符串，承接其他类型的最后实现</td>
+</tr>
+<tr>
+<td>CONSTANT_Integer_info</td>
+<td>整型字面量</td>
+</tr>
+<tr>
+<td>CONSTANT_Float_info</td>
+<td>浮点型字面量</td>
+</tr>
+<tr>
+<td>CONSTANT_Long_info</td>
+<td>长整型字面量</td>
+</tr>
+<tr>
+<td>CONSTANT_Double_info</td>
+<td>双精度字面量</td>
+</tr>
+<tr>
+<td>CONSTANT_String_info</td>
+<td>字符串字面</td>
+</tr>
+<tr>
+<td>CONSTANT_Class_info</td>
+<td>类或接口的符号引用</td>
+</tr>
+<tr>
+<td>CONSTANT_Fieldref_info</td>
+<td>字段的符号引用</td>
+</tr>
+<tr>
+<td>CONSTANT_Methodred_info</td>
+<td>类中方法的符号引用</td>
+</tr>
+<tr>
+<td>CONSTANT_InterfaceMethodred_info</td>
+<td>接口中方法的符号引用</td>
+</tr>
+<tr>
+<td>CONSTANT_NameAndType_info</td>
+<td>字段或方法的部分符号引用</td>
+</tr>
+<tr>
+<td>CONSTANT_MethodHandle_info</td>
+<td>方法句柄</td>
+</tr>
+<tr>
+<td>CONSTANT_MethodType_info</td>
+<td>方法类型</td>
+</tr>
+<tr>
+<td>CONSTANT_InvokeDynamic_info</td>
+<td>表示动态方法调用点</td>
+</tr>
+</tbody>
+</table>
+<p>字面量很好理解，把它近似于认为我们Java中的常量就好了。比如字符串、声明为final的常量。</p>
+<p>而符号引用则是近似当做字符串，包括了以下三个常量</p>
+<ul>
+<li>类和接口的全限定名</li>
+<li>字段的名称和描述符</li>
+<li>方法的名称和描述符</li>
+</ul>
+<p>为什么要有这个符号引用呢？</p>
+<p>因为Class文件不会保存各个方法、字段的最终内存布局信息。这些信息必须要在运行期才可以得到。只有在类创建或运行时解析、翻译的时候，才将符号引用转化为真正的内存地址。因此在类未被加载到内存的时候，符号引用被做为字符串指针，<strong>实现无差异的定位到目标</strong>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> com.demo.B</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">A</span></span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">a</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		B b= <span class="keyword">new</span> B();</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>A类引用了B类，在编译时A类并不知道B类的实际内存地址，因此只能使用符号”com.demo.B”（实际中是由CONSTANT_Class_info的常量而非简单的字符串）来表示B类的地址。</p>
+<p>至于符号引用转为内存地址，会在后续类的加载中介绍。</p>
+<p>我们再回到上面的栗子，我们<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloWorld</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	String demo = <span class="string">"demo"</span>;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>我们现在来试试用javap来反编译刚才编译好的HelloWorld.class。（javap是JDK自带的反汇编器,可以查看java编译器为我们生成的字节码。这里我只截取的部分。）</p>
+<blockquote>
+<p>javap -verbose HelloWorld</p>
+</blockquote>
+<p><img src="/images/pasted-33.png" alt="upload successful"></p>
+<p>虽然我的这个类很简单，可是在常量池中还是存在着很多数据。我们会发现，几乎这个类中所有的数据都在常量池中有着自己的符号引用或是字面量。</p>
+<p>我先简单的解释一下这个输出的信息,以第一条为例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#1 = Methodref		#5.#16	//java.lang.Object.&quot;&lt;init&gt;&quot;:()V</span><br></pre></td></tr></table></figure></p>
+<p>#1的作用是作为类内部的索引。作为114平台，类内部的成员想要找到自己相关的常量，都是通过#index来实现。 而Methodref指的是其类型，在这里指的是方法的符号引用。后面的 #5.#16 是#1的结果，在这里则是要继续链接到后面的 Utf-8的值。即 java.lang.Object.”<init>“:()V</init></p>
+<h4 id="3-访问标记"><a href="#3-访问标记" class="headerlink" title="3.访问标记"></a>3.访问标记</h4><p>这块区域用于标识一些类或者接口层面的访问信息。比如，这个Class是类还是接口；是否为public；是否为抽象类型；是否为final等。</p>
+<h4 id="4-索引集合"><a href="#4-索引集合" class="headerlink" title="4.索引集合"></a>4.索引集合</h4><p>索引区域的作用是:</p>
+<blockquote>
+<p>持有着指向到常量池中类相关信息的指针</p>
+</blockquote>
+<p>这一块的索引集合包含三个部分</p>
+<ol>
+<li>当前类索引（u2）</li>
+<li>父类索引（u2）</li>
+<li>接口索引（变长）</li>
+</ol>
+<p>Java只支持单继承，因此父类的索引只有一个，而接口取可以按照事先的接口数变长，索引定位的是其在常量池中的符号引用。</p>
+<p>现在我们以上常量池做个demo。</p>
+<p><img src="/images/pasted-34.png" alt="upload successful"><br>我们看到 #4 与 #5 为CONSTANT_Class_info 信息，因此在字节码中肯定存在 0004 0005 的片段。如下所示</p>
+<p><img src="/images/pasted-35.png" alt="upload successful"></p>
+<h4 id="5-字段表"><a href="#5-字段表" class="headerlink" title="5.字段表"></a>5.字段表</h4>
     </article>
     <!-- 前后页  -->
     <ul class="post-pager">
@@ -290,7 +512,7 @@
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Class文件的由来"><span class="toc-number">1.</span> <span class="toc-text"><a href="#Class&#x6587;&#x4EF6;&#x7684;&#x7531;&#x6765;" class="headerlink" title="Class&#x6587;&#x4EF6;&#x7684;&#x7531;&#x6765;"></a>Class&#x6587;&#x4EF6;&#x7684;&#x7531;&#x6765;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Class文件构成"><span class="toc-number">2.</span> <span class="toc-text"><a href="#Class&#x6587;&#x4EF6;&#x6784;&#x6210;" class="headerlink" title="Class&#x6587;&#x4EF6;&#x6784;&#x6210;"></a>Class&#x6587;&#x4EF6;&#x6784;&#x6210;</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Class文件的由来"><span class="toc-number">1.</span> <span class="toc-text"><a href="#Class&#x6587;&#x4EF6;&#x7684;&#x7531;&#x6765;" class="headerlink" title="Class&#x6587;&#x4EF6;&#x7684;&#x7531;&#x6765;"></a>Class&#x6587;&#x4EF6;&#x7684;&#x7531;&#x6765;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Class文件构成"><span class="toc-number">2.</span> <span class="toc-text"><a href="#Class&#x6587;&#x4EF6;&#x6784;&#x6210;" class="headerlink" title="Class&#x6587;&#x4EF6;&#x6784;&#x6210;"></a>Class&#x6587;&#x4EF6;&#x6784;&#x6210;</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-校验字节"><span class="toc-number">2.1.</span> <span class="toc-text"><a href="#1-&#x6821;&#x9A8C;&#x5B57;&#x8282;" class="headerlink" title="1.&#x6821;&#x9A8C;&#x5B57;&#x8282;"></a>1.&#x6821;&#x9A8C;&#x5B57;&#x8282;</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-常量池"><span class="toc-number">2.2.</span> <span class="toc-text"><a href="#2-&#x5E38;&#x91CF;&#x6C60;" class="headerlink" title="2.&#x5E38;&#x91CF;&#x6C60;"></a>2.&#x5E38;&#x91CF;&#x6C60;</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-访问标记"><span class="toc-number">2.3.</span> <span class="toc-text"><a href="#3-&#x8BBF;&#x95EE;&#x6807;&#x8BB0;" class="headerlink" title="3.&#x8BBF;&#x95EE;&#x6807;&#x8BB0;"></a>3.&#x8BBF;&#x95EE;&#x6807;&#x8BB0;</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-索引集合"><span class="toc-number">2.4.</span> <span class="toc-text"><a href="#4-&#x7D22;&#x5F15;&#x96C6;&#x5408;" class="headerlink" title="4.&#x7D22;&#x5F15;&#x96C6;&#x5408;"></a>4.&#x7D22;&#x5F15;&#x96C6;&#x5408;</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-字段表"><span class="toc-number">2.5.</span> <span class="toc-text"><a href="#5-&#x5B57;&#x6BB5;&#x8868;" class="headerlink" title="5.&#x5B57;&#x6BB5;&#x8868;"></a>5.&#x5B57;&#x6BB5;&#x8868;</span></a></li></ol></li></ol>
     </div>
     
     <div class="back-top">&#xe639;</div>
