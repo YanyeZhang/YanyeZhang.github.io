@@ -197,7 +197,7 @@
 <p>针对每个平台生成的可执行文件，只能在该平台上运行，因为其内部的指令不同。还记得高中从游民星空下载游戏的时候都要区分是x86还是x64么？就是这个原因。</p>
 <p>而Java的口号是：“Write Once，Run Anywhere”。其充分吸取了C/C++的教训，采用了字节码（*.class）与虚拟机的结合方式。将平台层面上差异处理交给JVM，而不需要经过开发者。现在打着同样口号的weex在实现思路上也一脉相承。</p>
 <p><img src="/images/pasted-28.png" alt="upload successful"></p>
-<p>这样的机构虽然解决了跨平台，可是同样引进了新的问题——性能。在C/C++中最后生成的可执行文件是本地机器码，而Java中，由于为了避免平台差异的问题，统一用字节码作为程序存储媒介。而这样代价就是在运行的过程是需要转译步骤的。即</p>
+<p>这样的机制虽然解决了跨平台，可是同样引进了新的问题——性能。在C/C++中最后生成的可执行文件是本地机器码，而Java中，由于为了避免平台差异的问题，统一用字节码作为程序存储媒介。而这样代价就是在运行的过程是需要转译步骤的。即</p>
 <blockquote>
 <p>字节码 -&gt; 本地机器码</p>
 </blockquote>
@@ -724,6 +724,8 @@
     
     
     
+    
+    
     <div class="total-archive"> Total : 7 </div>
     
     <div class="post-archive">
@@ -783,9 +785,9 @@
         <div class="sidebar-tags">
     <div class="sidebar-tags-name">
     
-        <span class="sidebar-tag-name"><a href= "#">python</a></span>
-    
         <span class="sidebar-tag-name"><a href= "#">Java</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">python</a></span>
     
     </div>
     <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
