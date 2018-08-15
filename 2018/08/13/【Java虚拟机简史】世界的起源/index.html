@@ -470,11 +470,12 @@
 <p>方法表的属性表中还会存在Code、Exception等，Code里这里面就是我们的方法的执行指令，Exception则是方法可能会抛出异常的索引。Code属性很重要，这里我们展开来说它。</p>
 <h4 id="6-Code"><a href="#6-Code" class="headerlink" title="6. Code"></a>6. Code</h4><p>Code属性主要有几个部分</p>
 <ol>
-<li>code：具体字节码指令（一个指令一个字节）</li>
-<li>max_stack: 操作数栈（先入后出栈）最大深度</li>
-<li>max_locals: 局部变量表所需的最大存储空间，单位为slot（可复用且单个长度不超过32位）。</li>
-<li>exceptinfo_info:记录着代码中可能存在的异常的执行路径（从第几行到第几行）</li>
-<li>attribute_info:code属性中还会嵌套其他属性如LineNumbertable等</li>
+<li>code：具体字节码指令（一个指令一个字节）；</li>
+<li>max_stack: 操作数栈（先入后出栈）最大深度；</li>
+<li>max_locals: 局部变量表所需的最大存储空间，单位为slot（可复用且单个长度不超过32位）；</li>
+<li>exceptinfo_info:记录着代码中可能存在的异常的执行路径（从第几行到第几行）；</li>
+<li>attribute_info:code属性中还会嵌套其他属性如LineNumbertable等；</li>
+<li>code_length:u4,因此一个方法最多能放65535个字节；</li>
 </ol>
 <p>我们再回头看看我们javap的结果</p>
 <p><img src="/images/pasted-42.png" alt="upload successful"></p>
@@ -537,7 +538,7 @@
 <p>接下来我们在说明一下指令、操作数栈、局部变量表之间的关系：</p>
 <p>加载和存储指令用于将数据在栈帧中的布局变量与操作数栈之间来回传输。我简单用一张图描述3者的关系。</p>
 <p><img src="/images/pasted-43.png" alt="upload successful"></p>
-<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>一个Class文件的结构就是按照这样的格式来分布，有兴趣的同学，可以对照着看看。会有助于你更了解自己编写出来的代码执行流程。</p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>一个Class文件的结构就是按照这样的格式来分布，有兴趣的同学，可以对照字节码一点一点的看看着。在Class文件中最重要的就是常量池，当掌握之后，能更助利了解后续类加载，方法调用。</p>
 
     </article>
     <!-- 前后页  -->
@@ -640,6 +641,10 @@
     <div class="sidebar-content sidebar-content-show-archive">
           <div class="sidebar-archive">
     <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
     
     
     
