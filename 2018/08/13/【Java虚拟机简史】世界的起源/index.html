@@ -199,7 +199,7 @@
 <h3 id="Class文件构成"><a href="#Class文件构成" class="headerlink" title="Class文件构成"></a>Class文件构成</h3><p>在自然界中，DNA是一种长链聚合物，上面有成千上万的基因片段，决定着生物的性状。</p>
 <p>在虚拟机世界中，Class文件则是一段约定俗称的紧密固定结构，里面包含着Class版本信息，常量池，访问标识，字段集合等类信息。同样决定着实例化之后对象的状态。</p>
 <p><img src="/images/pasted-36.png" alt="upload successful"></p>
-<p>我们可以先看看Class文件编译后的样子，到底是怎么样的。</p>
+<p>我们可以先看看java文件编译后的样子，到底是怎么样的。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloWorld</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    String demo = <span class="string">"demo"</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>用javac指令编译之后，打开生成的 HelloWorld.class</p>
 <p><img src="/images/pasted-32.png" alt="upload successful"></p>
