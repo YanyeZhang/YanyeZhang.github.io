@@ -296,6 +296,7 @@
 </tr>
 </tbody>
 </table>
+<p>以上的attribut_info 是一个属性表，在类文件、cp_info、field_info、method_info、包括attribut_info内都有可能出现。</p>
 <p>一个Class文件的结构就是按照这样的格式来分布，有兴趣的同学，可以对照着看看。</p>
 <h4 id="1-校验字节"><a href="#1-校验字节" class="headerlink" title="1.校验字节"></a>1.校验字节</h4><ul>
 <li>魔数（4字节）</li>
@@ -363,11 +364,11 @@
 <td>字段的符号引用</td>
 </tr>
 <tr>
-<td>CONSTANT_Methodred_info</td>
-<td>类中方法的符号引用</td>
+<td>CONSTANT_Methodref_info</td>
+<td>类中方法的符号引用（只有被调用过才会生成）</td>
 </tr>
 <tr>
-<td>CONSTANT_InterfaceMethodred_info</td>
+<td>CONSTANT_InterfaceMethodref_info</td>
 <td>接口中方法的符号引用</td>
 </tr>
 <tr>
@@ -409,6 +410,7 @@
 <p>虽然我的这个类很简单，可是在常量池中还是存在着很多数据。我们会发现，几乎这个类中所有的数据都在常量池中有着自己的符号引用或是字面量。</p>
 <p>我先简单的解释一下这个输出的信息,以第一条为例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#1 = Methodref		#5.#16	//java.lang.Object.&quot;&lt;init&gt;&quot;:()V</span><br></pre></td></tr></table></figure></p>
 <p>#1的作用是作为类内部的索引。作为114平台，类内部的成员想要找到自己相关的常量，都是通过#index来实现。 而Methodref指的是其类型，在这里指的是方法的符号引用。后面的 #5.#16 是#1的结果，在这里则是要继续链接到后面的 Utf-8的值。即 java.lang.Object.”<init>“:()V</init></p>
+<p>下文会讲到很多属性，这里需要注意的是，属性类型也是通过常量池的utf-8的索引来确定的。</p>
 <h4 id="3-访问标记"><a href="#3-访问标记" class="headerlink" title="3.访问标记"></a>3.访问标记</h4><p>这块区域用于标识一些类或者接口层面的访问信息。比如，这个Class是类还是接口；是否为public；是否为抽象类型；是否为final等。</p>
 <h4 id="4-索引集合"><a href="#4-索引集合" class="headerlink" title="4.索引集合"></a>4.索引集合</h4><p>索引区域的作用是:</p>
 <blockquote>
@@ -434,8 +436,107 @@
 <li>字段类型；</li>
 <li>字段名称；</li>
 </ol>
-<p>我们看看刚才Javap反编译关于字段表的结果</p>
-<p><img src="/images/pasted-38.png" alt="upload successful"></p>
+<p>和前面的索引集合一样，字段表也是利用同样的方式去索引到常量池中的字段名称、字段类型、字段值。</p>
+<p>我们再回顾一下刚才代码<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloWorld</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	String demo = <span class="string">"demo"</span>;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span> </span>&#123;</span><br><span class="line">		<span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这里面变量只有一个字符串 demo，我们再看看刚才Javap反编译关于字段表的结果。</p>
+<p><img src="/images/pasted-38.png" alt="upload successful"><br>其中 descriptor 在字节码中应该索引到的是 #7的位置，flags为空是因为没有给String设置作用域。</p>
+<blockquote>
+<p>为什么 descriptor 是 Ljava/lang/String 而不是 java/lang/String? 多出来的L是什么意思</p>
+</blockquote>
+<p>这里的descriptor的作用是表述字段的数据类型。根据描述符的规则，基本数据类型（byte、char、double、float、int、long、short、boolean）和对象类型都需要加上相对应的字符。</p>
+<p>这里的 L 就是规定对象类型需要加上的字符。</p>
+<p>基础类型的字符：long的字符是J，其他基础类型的字符很好记忆，都是首字母。如 int 就是 I </p>
+<p>我们再修改一下我们的修改实例代码，将String改为字符串数组<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">HelloWorld</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    String demo[];</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>看看其javap之后的结果<br><img src="/images/pasted-40.png" alt="upload successful"><br>Ljava/lang/String 前面加了一个 [。 这里的意思是如果是数组类型，每增加一个维度都将在类型前加一个[, 所以如果是 </p>
+<p>字段表中<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String demo[][]</span><br></pre></td></tr></table></figure></p>
+<p>就是[[Ljava/lang/String</p>
+<p>这种格式其实在很多奔溃中会出现。我们了解起来也并不陌生。</p>
+<p>字段表有一个专属的属性是ConstantValue,里面存储的是在类的常量在常量池的索引。</p>
+<h4 id="5-方法表"><a href="#5-方法表" class="headerlink" title="5.方法表"></a>5.方法表</h4><p>方法表的构成和字段表十分的类似。</p>
+<ol>
+<li>作用域（public、private、protected）；</li>
+<li>是否为静态方法 (static)；</li>
+<li>是否可以被子类复写（final）；</li>
+<li>并发性（sychronize：线程同步锁）；</li>
+<li>是否可以是抽象方法；</li>
+<li>返回值；</li>
+<li>方法名称；</li>
+<li>入参信息；</li>
+</ol>
+<p>我们可以看看从刚才常量池的截图中看到看到当前这个Class有两个方法：</p>
+<ol>
+<li><init> 这个是在编译器合成的，在实例化的过程中会先被调用。</init></li>
+<li><main> 这个方法才是我们写的方法。</main></li>
+</ol>
+<p>方法表的属性表中还会存在Code、Exception等，Code里这里面就是我们的方法的执行指令，Exception则是方法可能会抛出异常的索引。Code属性很重要，这里我们展开来说它。</p>
+<h4 id="6-Code"><a href="#6-Code" class="headerlink" title="6. Code"></a>6. Code</h4><p>Code属性主要有几个部分</p>
+<ol>
+<li>code：具体字节码指令（一个指令一个字节）</li>
+<li>max_stack: 操作数栈（先入后出栈）最大深度</li>
+<li>max_locals: 局部变量表所需的最大存储空间，单位为slot（可复用且单个长度不超过32位）。</li>
+<li>exceptinfo_info:记录着代码中可能存在的异常的执行路径（从第几行到第几行）</li>
+<li>attribute_info:code属性中还会嵌套其他属性如LineNumbertable等</li>
+</ol>
+<p>我们再回头看看我们javap的结果</p>
+<p><img src="/images/pasted-42.png" alt="upload successful"></p>
+<p>我们可以看到Code部分，操作数栈深度为1，局部变量表的最大容量为3，参数为2</p>
+<blockquote>
+<p>看到这里，会有人为什么参数为2，明明入参只有一个的？</p>
+</blockquote>
+<p>这里的main方法是实例方法，因此在这里需要默认传入一个当前实例（即this），且放在局部变量表的第一个位置，不过在这里被隐藏了。而如果是静态方法则不需要传入。</p>
+<p>这里先给大家简单的介绍一下字节码指令。指令的具体细节很多，如果要记下来比较繁琐，这里我就先总结出普适性的规则，和部分需要差异的点。</p>
+<table>
+<thead>
+<tr>
+<th>类型（T为泛型）</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Tload</td>
+<td>从局部变量表中读取数值</td>
+<td></td>
+</tr>
+<tr>
+<td>Tconst</td>
+<td>将常量加载到操作数栈</td>
+<td></td>
+</tr>
+<tr>
+<td>Tstore</td>
+<td>将操作数栈的值存到局部变量表</td>
+<td></td>
+</tr>
+<tr>
+<td>Treturn</td>
+<td>返回值</td>
+<td></td>
+</tr>
+<tr>
+<td>new</td>
+<td>创建实例</td>
+</tr>
+<tr>
+<td>getXXX</td>
+<td>获取字段</td>
+</tr>
+<tr>
+<td>invokevirtual</td>
+<td>调用对象的实例方法</td>
+</tr>
+<tr>
+<td>invokespecial</td>
+<td>用于调用init方法、私有方法、父类方法</td>
+</tr>
+<tr>
+<td>invokestatic</td>
+<td>用于调用静态方法</td>
+</tr>
+</tbody>
+</table>
+<p>加载和存储指令用于将数据在栈帧中的布局变量与操作数栈之间来回传输。我简单用一张图描述3者的关系。</p>
+<p><img src="/images/pasted-43.png" alt="upload successful"></p>
 
     </article>
     <!-- 前后页  -->
@@ -524,7 +625,7 @@
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Class文件的由来"><span class="toc-number">1.</span> <span class="toc-text"><a href="#Class&#x6587;&#x4EF6;&#x7684;&#x7531;&#x6765;" class="headerlink" title="Class&#x6587;&#x4EF6;&#x7684;&#x7531;&#x6765;"></a>Class&#x6587;&#x4EF6;&#x7684;&#x7531;&#x6765;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Class文件构成"><span class="toc-number">2.</span> <span class="toc-text"><a href="#Class&#x6587;&#x4EF6;&#x6784;&#x6210;" class="headerlink" title="Class&#x6587;&#x4EF6;&#x6784;&#x6210;"></a>Class&#x6587;&#x4EF6;&#x6784;&#x6210;</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-校验字节"><span class="toc-number">2.1.</span> <span class="toc-text"><a href="#1-&#x6821;&#x9A8C;&#x5B57;&#x8282;" class="headerlink" title="1.&#x6821;&#x9A8C;&#x5B57;&#x8282;"></a>1.&#x6821;&#x9A8C;&#x5B57;&#x8282;</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-常量池"><span class="toc-number">2.2.</span> <span class="toc-text"><a href="#2-&#x5E38;&#x91CF;&#x6C60;" class="headerlink" title="2.&#x5E38;&#x91CF;&#x6C60;"></a>2.&#x5E38;&#x91CF;&#x6C60;</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-访问标记"><span class="toc-number">2.3.</span> <span class="toc-text"><a href="#3-&#x8BBF;&#x95EE;&#x6807;&#x8BB0;" class="headerlink" title="3.&#x8BBF;&#x95EE;&#x6807;&#x8BB0;"></a>3.&#x8BBF;&#x95EE;&#x6807;&#x8BB0;</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-索引集合"><span class="toc-number">2.4.</span> <span class="toc-text"><a href="#4-&#x7D22;&#x5F15;&#x96C6;&#x5408;" class="headerlink" title="4.&#x7D22;&#x5F15;&#x96C6;&#x5408;"></a>4.&#x7D22;&#x5F15;&#x96C6;&#x5408;</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-字段表"><span class="toc-number">2.5.</span> <span class="toc-text"><a href="#5-&#x5B57;&#x6BB5;&#x8868;" class="headerlink" title="5.&#x5B57;&#x6BB5;&#x8868;"></a>5.&#x5B57;&#x6BB5;&#x8868;</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Class文件的由来"><span class="toc-number">1.</span> <span class="toc-text"><a href="#Class&#x6587;&#x4EF6;&#x7684;&#x7531;&#x6765;" class="headerlink" title="Class&#x6587;&#x4EF6;&#x7684;&#x7531;&#x6765;"></a>Class&#x6587;&#x4EF6;&#x7684;&#x7531;&#x6765;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Class文件构成"><span class="toc-number">2.</span> <span class="toc-text"><a href="#Class&#x6587;&#x4EF6;&#x6784;&#x6210;" class="headerlink" title="Class&#x6587;&#x4EF6;&#x6784;&#x6210;"></a>Class&#x6587;&#x4EF6;&#x6784;&#x6210;</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-校验字节"><span class="toc-number">2.1.</span> <span class="toc-text"><a href="#1-&#x6821;&#x9A8C;&#x5B57;&#x8282;" class="headerlink" title="1.&#x6821;&#x9A8C;&#x5B57;&#x8282;"></a>1.&#x6821;&#x9A8C;&#x5B57;&#x8282;</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-常量池"><span class="toc-number">2.2.</span> <span class="toc-text"><a href="#2-&#x5E38;&#x91CF;&#x6C60;" class="headerlink" title="2.&#x5E38;&#x91CF;&#x6C60;"></a>2.&#x5E38;&#x91CF;&#x6C60;</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-访问标记"><span class="toc-number">2.3.</span> <span class="toc-text"><a href="#3-&#x8BBF;&#x95EE;&#x6807;&#x8BB0;" class="headerlink" title="3.&#x8BBF;&#x95EE;&#x6807;&#x8BB0;"></a>3.&#x8BBF;&#x95EE;&#x6807;&#x8BB0;</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-索引集合"><span class="toc-number">2.4.</span> <span class="toc-text"><a href="#4-&#x7D22;&#x5F15;&#x96C6;&#x5408;" class="headerlink" title="4.&#x7D22;&#x5F15;&#x96C6;&#x5408;"></a>4.&#x7D22;&#x5F15;&#x96C6;&#x5408;</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-字段表"><span class="toc-number">2.5.</span> <span class="toc-text"><a href="#5-&#x5B57;&#x6BB5;&#x8868;" class="headerlink" title="5.&#x5B57;&#x6BB5;&#x8868;"></a>5.&#x5B57;&#x6BB5;&#x8868;</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-方法表"><span class="toc-number">2.6.</span> <span class="toc-text"><a href="#5-&#x65B9;&#x6CD5;&#x8868;" class="headerlink" title="5.&#x65B9;&#x6CD5;&#x8868;"></a>5.&#x65B9;&#x6CD5;&#x8868;</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-Code"><span class="toc-number">2.7.</span> <span class="toc-text"><a href="#6-Code" class="headerlink" title="6. Code"></a>6. Code</span></a></li></ol></li></ol>
     </div>
     
     <div class="back-top">&#xe639;</div>
@@ -538,14 +639,6 @@
     <div class="sidebar-content sidebar-content-show-archive">
           <div class="sidebar-archive">
     <!-- 在ejs中将archive按照时间排序 -->
-    
-    
-    
-    
-    
-    
-    
-    
     
     
     
@@ -678,9 +771,9 @@
         <div class="sidebar-tags">
     <div class="sidebar-tags-name">
     
-        <span class="sidebar-tag-name"><a href= "#">python</a></span>
-    
         <span class="sidebar-tag-name"><a href= "#">Java</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">python</a></span>
     
     </div>
     <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
