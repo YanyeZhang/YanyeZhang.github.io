@@ -296,8 +296,7 @@
 </tr>
 </tbody>
 </table>
-<p>以上的attribut_info 是一个属性表，在类文件、cp_info、field_info、method_info、包括attribut_info内都有可能出现。</p>
-<p>一个Class文件的结构就是按照这样的格式来分布，有兴趣的同学，可以对照着看看。</p>
+<p>以上的attribut_info 是一个属性表，在类文件、cp_info、field_info、method_info、包括attribut_info内都有可能出现。因为篇幅有限，只会重点介绍一些重要的部分。</p>
 <h4 id="1-校验字节"><a href="#1-校验字节" class="headerlink" title="1.校验字节"></a>1.校验字节</h4><ul>
 <li>魔数（4字节）</li>
 </ul>
@@ -484,7 +483,7 @@
 <p>看到这里，会有人为什么参数为2，明明入参只有一个的？</p>
 </blockquote>
 <p>这里的main方法是实例方法，因此在这里需要默认传入一个当前实例（即this），且放在局部变量表的第一个位置，不过在这里被隐藏了。而如果是静态方法则不需要传入。</p>
-<p>这里先给大家简单的介绍一下字节码指令。指令的具体细节很多，如果要记下来比较繁琐，这里我就先总结出普适性的规则，和部分需要差异的点。</p>
+<p>这里先给大家简单的介绍一下字节码指令。指令的具体细节很多，如果要记下来比较繁琐，我这里先举出一些常用的指令</p>
 <table>
 <thead>
 <tr>
@@ -535,8 +534,10 @@
 </tr>
 </tbody>
 </table>
+<p>接下来我们在说明一下指令、操作数栈、局部变量表之间的关系：</p>
 <p>加载和存储指令用于将数据在栈帧中的布局变量与操作数栈之间来回传输。我简单用一张图描述3者的关系。</p>
 <p><img src="/images/pasted-43.png" alt="upload successful"></p>
+<h4 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h4><p>一个Class文件的结构就是按照这样的格式来分布，有兴趣的同学，可以对照着看看。会有助于你更了解自己编写出来的代码执行流程。</p>
 
     </article>
     <!-- 前后页  -->
@@ -625,7 +626,7 @@
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Class文件的由来"><span class="toc-number">1.</span> <span class="toc-text"><a href="#Class&#x6587;&#x4EF6;&#x7684;&#x7531;&#x6765;" class="headerlink" title="Class&#x6587;&#x4EF6;&#x7684;&#x7531;&#x6765;"></a>Class&#x6587;&#x4EF6;&#x7684;&#x7531;&#x6765;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Class文件构成"><span class="toc-number">2.</span> <span class="toc-text"><a href="#Class&#x6587;&#x4EF6;&#x6784;&#x6210;" class="headerlink" title="Class&#x6587;&#x4EF6;&#x6784;&#x6210;"></a>Class&#x6587;&#x4EF6;&#x6784;&#x6210;</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-校验字节"><span class="toc-number">2.1.</span> <span class="toc-text"><a href="#1-&#x6821;&#x9A8C;&#x5B57;&#x8282;" class="headerlink" title="1.&#x6821;&#x9A8C;&#x5B57;&#x8282;"></a>1.&#x6821;&#x9A8C;&#x5B57;&#x8282;</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-常量池"><span class="toc-number">2.2.</span> <span class="toc-text"><a href="#2-&#x5E38;&#x91CF;&#x6C60;" class="headerlink" title="2.&#x5E38;&#x91CF;&#x6C60;"></a>2.&#x5E38;&#x91CF;&#x6C60;</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-访问标记"><span class="toc-number">2.3.</span> <span class="toc-text"><a href="#3-&#x8BBF;&#x95EE;&#x6807;&#x8BB0;" class="headerlink" title="3.&#x8BBF;&#x95EE;&#x6807;&#x8BB0;"></a>3.&#x8BBF;&#x95EE;&#x6807;&#x8BB0;</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-索引集合"><span class="toc-number">2.4.</span> <span class="toc-text"><a href="#4-&#x7D22;&#x5F15;&#x96C6;&#x5408;" class="headerlink" title="4.&#x7D22;&#x5F15;&#x96C6;&#x5408;"></a>4.&#x7D22;&#x5F15;&#x96C6;&#x5408;</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-字段表"><span class="toc-number">2.5.</span> <span class="toc-text"><a href="#5-&#x5B57;&#x6BB5;&#x8868;" class="headerlink" title="5.&#x5B57;&#x6BB5;&#x8868;"></a>5.&#x5B57;&#x6BB5;&#x8868;</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-方法表"><span class="toc-number">2.6.</span> <span class="toc-text"><a href="#5-&#x65B9;&#x6CD5;&#x8868;" class="headerlink" title="5.&#x65B9;&#x6CD5;&#x8868;"></a>5.&#x65B9;&#x6CD5;&#x8868;</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-Code"><span class="toc-number">2.7.</span> <span class="toc-text"><a href="#6-Code" class="headerlink" title="6. Code"></a>6. Code</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Class文件的由来"><span class="toc-number">1.</span> <span class="toc-text"><a href="#Class&#x6587;&#x4EF6;&#x7684;&#x7531;&#x6765;" class="headerlink" title="Class&#x6587;&#x4EF6;&#x7684;&#x7531;&#x6765;"></a>Class&#x6587;&#x4EF6;&#x7684;&#x7531;&#x6765;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Class文件构成"><span class="toc-number">2.</span> <span class="toc-text"><a href="#Class&#x6587;&#x4EF6;&#x6784;&#x6210;" class="headerlink" title="Class&#x6587;&#x4EF6;&#x6784;&#x6210;"></a>Class&#x6587;&#x4EF6;&#x6784;&#x6210;</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#1-校验字节"><span class="toc-number">2.1.</span> <span class="toc-text"><a href="#1-&#x6821;&#x9A8C;&#x5B57;&#x8282;" class="headerlink" title="1.&#x6821;&#x9A8C;&#x5B57;&#x8282;"></a>1.&#x6821;&#x9A8C;&#x5B57;&#x8282;</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-常量池"><span class="toc-number">2.2.</span> <span class="toc-text"><a href="#2-&#x5E38;&#x91CF;&#x6C60;" class="headerlink" title="2.&#x5E38;&#x91CF;&#x6C60;"></a>2.&#x5E38;&#x91CF;&#x6C60;</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-访问标记"><span class="toc-number">2.3.</span> <span class="toc-text"><a href="#3-&#x8BBF;&#x95EE;&#x6807;&#x8BB0;" class="headerlink" title="3.&#x8BBF;&#x95EE;&#x6807;&#x8BB0;"></a>3.&#x8BBF;&#x95EE;&#x6807;&#x8BB0;</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-索引集合"><span class="toc-number">2.4.</span> <span class="toc-text"><a href="#4-&#x7D22;&#x5F15;&#x96C6;&#x5408;" class="headerlink" title="4.&#x7D22;&#x5F15;&#x96C6;&#x5408;"></a>4.&#x7D22;&#x5F15;&#x96C6;&#x5408;</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-字段表"><span class="toc-number">2.5.</span> <span class="toc-text"><a href="#5-&#x5B57;&#x6BB5;&#x8868;" class="headerlink" title="5.&#x5B57;&#x6BB5;&#x8868;"></a>5.&#x5B57;&#x6BB5;&#x8868;</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#5-方法表"><span class="toc-number">2.6.</span> <span class="toc-text"><a href="#5-&#x65B9;&#x6CD5;&#x8868;" class="headerlink" title="5.&#x65B9;&#x6CD5;&#x8868;"></a>5.&#x65B9;&#x6CD5;&#x8868;</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#6-Code"><span class="toc-number">2.7.</span> <span class="toc-text"><a href="#6-Code" class="headerlink" title="6. Code"></a>6. Code</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#总结"><span class="toc-number">2.8.</span> <span class="toc-text"><a href="#&#x603B;&#x7ED3;" class="headerlink" title="&#x603B;&#x7ED3;"></a>&#x603B;&#x7ED3;</span></a></li></ol></li></ol>
     </div>
     
     <div class="back-top">&#xe639;</div>
@@ -639,6 +640,10 @@
     <div class="sidebar-content sidebar-content-show-archive">
           <div class="sidebar-archive">
     <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
     
     
     
@@ -771,9 +776,9 @@
         <div class="sidebar-tags">
     <div class="sidebar-tags-name">
     
-        <span class="sidebar-tag-name"><a href= "#">Java</a></span>
-    
         <span class="sidebar-tag-name"><a href= "#">python</a></span>
+    
+        <span class="sidebar-tag-name"><a href= "#">Java</a></span>
     
     </div>
     <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
