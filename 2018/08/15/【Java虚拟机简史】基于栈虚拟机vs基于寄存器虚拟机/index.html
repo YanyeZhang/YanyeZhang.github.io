@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
     <title>
         
-        【Java虚拟机简史】基于栈虚拟机vs基于寄存器虚拟机 · 走川博客
+        【虚拟机简史】基于栈虚拟机vs基于寄存器虚拟机 · 走川博客
         
     </title>
     <link rel="icon" href= /assests/favicon.ico>
@@ -73,7 +73,7 @@
                 <a href="/" >YY&#39;s Studio.</a>
             </div>
             <div class="post-title">
-                <a href="#" class="post-name">【Java虚拟机简史】基于栈虚拟机vs基于寄存器虚拟机</a>
+                <a href="#" class="post-name">【虚拟机简史】基于栈虚拟机vs基于寄存器虚拟机</a>
             </div>
     </div>
     
@@ -94,7 +94,7 @@
         <h1 class="intro-title">
             <!-- 主页  -->
             
-            【Java虚拟机简史】基于栈虚拟机vs基于寄存器虚拟机
+            【虚拟机简史】基于栈虚拟机vs基于寄存器虚拟机
             <!-- 404 -->
             
         </h1>
@@ -196,7 +196,7 @@
 <p>从指令层面上，以上一共执行了4步。但其实指令在解释为机器码的过程中，一个指令或许会引起CPU多个操作步骤。如istore，除了将操作数栈顶的值放到局部变量表之外，还执行了出栈的操作，这对cpu来说是两步操作。</p>
 <p>我们再从物理层面上来看这个结构：</p>
 <p><img src="/images/pasted-51.png" alt="upload successful"></p>
-<p>可以发现基于栈的虚拟机，除了和cpu交互之外，就没有和物理层面上有挂钩的点。这样的好处在于：<strong>对硬件的要求不高，很大程度上消除对硬件的依赖。 </strong>。</p>
+<p>可以发现基于栈的虚拟机，除了和cpu交互之外，就没有和物理层面上有挂钩的点。这样的好处在于：<strong>对硬件的要求不高，很大程度上消除对硬件的依赖。 </strong></p>
 <p>同时，操作数栈是先入后出栈，每次对数据的处理都是通过栈顶的出栈入栈，而局部变量表也是一个类数组的机构。因此使得基于栈的虚拟机指令不需要与地址相关，因此也被叫做0地址指令。</p>
 <h3 id="基于寄存器"><a href="#基于寄存器" class="headerlink" title="基于寄存器"></a>基于寄存器</h3><p>接下来我们再看看基于寄存器的JVM。<br>一样的代码<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a = <span class="number">33</span></span><br><span class="line"><span class="keyword">int</span> b = <span class="number">44</span></span><br><span class="line"><span class="keyword">int</span> c = a + b</span><br></pre></td></tr></table></figure></p>
 <p>这次编译出来的指令是基于寄存器的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">add ax bx	//其中AX寄存器的值为33,BX寄存器的值为44，将结果放入AX</span><br></pre></td></tr></table></figure></p>
@@ -267,7 +267,7 @@
 <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
 <script>
     var gitment = new Gitment({
-        id: "【Java虚拟机简史】基于栈虚拟机vs基于寄存器虚拟机", // 可选。默认为 location.href
+        id: "【虚拟机简史】基于栈虚拟机vs基于寄存器虚拟机", // 可选。默认为 location.href
         owner: 'YanyeZhang',
         repo: 'YanyeZhang.github.io',
         oauth: {
@@ -450,7 +450,7 @@
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">08/15</span><a class="archive-post-title" href= "/2018/08/15/【Java虚拟机简史】基于栈虚拟机vs基于寄存器虚拟机/" >【Java虚拟机简史】基于栈虚拟机vs基于寄存器虚拟机</a>
+            <span class="archive-post-date">08/15</span><a class="archive-post-title" href= "/2018/08/15/【Java虚拟机简史】基于栈虚拟机vs基于寄存器虚拟机/" >【虚拟机简史】基于栈虚拟机vs基于寄存器虚拟机</a>
         </li>
     
     
