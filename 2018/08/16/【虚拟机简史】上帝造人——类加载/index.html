@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
     <title>
         
-        走川博客
+        【虚拟机简史】生命的起源—类加载 · 走川博客
         
     </title>
     <link rel="icon" href= /assests/favicon.ico>
@@ -60,11 +60,22 @@
     
 </head>
     
+        <body class="post-body">
+    
     
 <header class="header">
 
     <div class="header-sidebar-menu">&#xe775;</div>
     <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >YY&#39;s Studio.</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">【虚拟机简史】生命的起源—类加载</a>
+            </div>
+    </div>
     
     <a class="home-link" href=/>YY's Studio.</a>
 </header>
@@ -72,21 +83,43 @@
         <div class="site-intro">
     
     <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
             
-    <div class="site-intro-img" style="background-image: url(/)"></div>
+    <div class="site-intro-img" style="background-image: url(http://oumn0o088.bkt.clouddn.com/post-bg.jpg)"></div>
     <div class="site-intro-placeholder"></div>
     <div class="site-intro-meta">
         <!-- 标题  -->
         <h1 class="intro-title">
             <!-- 主页  -->
             
+            【虚拟机简史】生命的起源—类加载
+            <!-- 404 -->
+            
         </h1>
         <!-- 副标题 -->
         <p class="intro-subtitle">
             <!-- 主页副标题  -->
             
+            
+            <!-- 404 -->
+            
         </p>
         <!-- 文章页meta -->
+        
+            <!-- 文章页标签  -->
+            
+                <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-href = 虚拟机>虚拟机</a>
+    
+</div>
+            
+            <div class="post-intro-meta">
+                <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                <span class="post-intro-time">2018/08/16</span>
+            </div>
         
     </div>
 </div>
@@ -154,213 +187,50 @@
             }
         </script>
         <div class="container container-unloaded">
-            <main class="main index-page">
-    
-    
-    
-        <article class="index-post">
-            <a class="content-show-full" href = "/2018/08/16/【虚拟机简史】上帝造人——类加载/" >
-                    <h2 class="abstract-title">
-                        
-                        <span>【虚拟机简史】生命的起源—类加载</span>
-                    </h2>
-                <div class="abstract-content">
-                     
-                </div>
-            </a>
-            <div class="abstract-post-meta">
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-href = 虚拟机>虚拟机</a>
-    
-</div>
-                
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2018/08/16</span>
-                </div>
-            </div>
-        </article>
-    
-    
-    
-        <article class="index-post">
-            <a class="content-show-full" href = "/2018/08/15/【Java虚拟机简史】基于栈虚拟机vs基于寄存器虚拟机/" >
-                    <h2 class="abstract-title">
-                        
-                        <span>【虚拟机简史】基于栈虚拟机vs基于寄存器虚拟机</span>
-                    </h2>
-                <div class="abstract-content">
-                     前言虚拟机的存在是为了隔绝物理层面上的差异，而在虚拟机中也存在多种执行方式。在介绍Class文件中，我们了解到JVM虚拟机指令执行是通过操作数栈，这样的虚拟机被认为是基于栈的，而Dalvik虚拟机中则是基于寄存器的，那基于栈与基于寄存器的虚拟机到底有什么区别？
-首先，我们要先了解栈和寄存器，栈是虚拟机在内存中划分出来的虚拟区域属于栈帧的一部分，用作数据处理的区域，而寄存器则是一个真实的物理...
-                </div>
-            </a>
-            <div class="abstract-post-meta">
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-href = 虚拟机>虚拟机</a>
-    
-</div>
-                
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2018/08/15</span>
-                </div>
-            </div>
-        </article>
-    
-    
-    
-        <article class="index-post">
-            <a class="content-show-full" href = "/2018/08/13/【Java虚拟机简史】世界的起源/" >
-                    <h2 class="abstract-title">
-                        
-                        <span>【虚拟机简史】万物的DNA—Class文件</span>
-                    </h2>
-                <div class="abstract-content">
-                     就如同在现实生活中每种生物都有自己的独特DNA一样，虚拟机世界中每个对象都拥有自己的DNA——Class文件。
+            <main class="main post-page">
+    <article class="article-entry">
+        <script src="/assets/js/APlayer.min.js"> </script>
+    </article>
+    <!-- 前后页  -->
+    <ul class="post-pager">
+        
+        
+            <li class="previous">
+                <a href= "/2018/08/15/【Java虚拟机简史】基于栈虚拟机vs基于寄存器虚拟机/" title= 【虚拟机简史】基于栈虚拟机vs基于寄存器虚拟机 >
+                    <span>Previous Post</span>
+                    <span>【虚拟机简史】基于栈虚拟机vs基于寄存器虚拟机</span>
+                </a>
+            </li>
+        
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
 
-Class文件的由来在了解之前class文件之前，我们必须要明白为什么会有class文件。
-在C/C++的时代，为了解决平台移植，开发者们必须在不同的操作系统编译相对应的文件。因为每个操作系统的CPU指令集机都是不同的，而为了提供C/C++的运行环境，分别实现了C/C++的标准...
-                </div>
-            </a>
-            <div class="abstract-post-meta">
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-href = 虚拟机>虚拟机</a>
-    
-</div>
-                
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2018/08/13</span>
-                </div>
-            </div>
-        </article>
+<!-- City版安装代码已完成 -->
     
     
-    
-        <article class="index-post">
-            <a class="content-show-full" href = "/2018/08/02/【Android-Jetpack】/" >
-                    <h2 class="abstract-title">
-                        
-                        <span>【Android Jetpack】ViewModel 源码分析</span>
-                    </h2>
-                <div class="abstract-content">
-                     
+<div id="container"></div>
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+    var gitment = new Gitment({
+        id: "【虚拟机简史】生命的起源—类加载", // 可选。默认为 location.href
+        owner: 'YanyeZhang',
+        repo: 'YanyeZhang.github.io',
+        oauth: {
+            client_id: 'dbaed912e5b7c0480a2f',
+            client_secret: 'f8eca7690f60152569c598b05df04fe885e17a4b',
+        },
+    })
+    gitment.render('container')
 
-                </div>
-            </a>
-            <div class="abstract-post-meta">
-                <!-- tags  -->
-                
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2018/08/02</span>
-                </div>
-            </div>
-        </article>
-    
-    
-    
-        <article class="index-post">
-            <a class="content-show-full" href = "/2018/07/30/【Java常用容器】LinkList源码分析/" >
-                    <h2 class="abstract-title">
-                        
-                        <span>【Java常用容器】LinkedList源码分析</span>
-                    </h2>
-                <div class="abstract-content">
-                     阅读提醒：将本文结合源码一起使用味道更佳哦！~
-前言LinkedList在很多源码中被广泛的使用。大家常将它与ArrayList做对比，二者不论是从数据结构还是实现逻辑上都很大的差异。希望通过本文能让大家在类似需要线性存储数据的场景下能更好的选择适应容器。
-类定义123public class LinkedList&lt;E&gt;   	extends AbstractSequentia...
-                </div>
-            </a>
-            <div class="abstract-post-meta">
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-href = Java>Java</a>
-    
-</div>
-                
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2018/07/30</span>
-                </div>
-            </div>
-        </article>
-    
-    
-    
-        <article class="index-post">
-            <a class="content-show-full" href = "/2018/07/23/最熟悉的陌生人—HashMap/" >
-                    <h2 class="abstract-title">
-                        
-                        <span>【Java常用容器】HashMap源码分析</span>
-                    </h2>
-                <div class="abstract-content">
-                     阅读提醒：将本文结合源码一起使用味道更佳哦！~
-前言 上一章写到ArrayList的源码分析，而本篇将会对同样是最常用的容器之一的HashMap来进行分析。之前面试求职者，经常会问到HashMap的底层数据结构的部分。很多人只回答出是“哈希表”。因此特意引用网上哈希表的定义：
+</script>
 
-散列表（Hash table，也叫哈希表），是根据关键码值(Key value)而直接进行访问的数据结构。也就是...
-                </div>
-            </a>
-            <div class="abstract-post-meta">
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-href = Java>Java</a>
-    
-</div>
-                
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2018/07/23</span>
-                </div>
-            </div>
-        </article>
-    
-    
-    
-        <article class="index-post">
-            <a class="content-show-full" href = "/2018/07/17/java数组/" >
-                    <h2 class="abstract-title">
-                        
-                        <span>【Java常用容器】ArrayList源码分析 </span>
-                    </h2>
-                <div class="abstract-content">
-                     阅读提醒：将本文结合源码一起使用味道更佳哦！~
-前言
-ArrayList 是我们最常用的一个集合类之一。了解它的实现，有助于我们理解自己写下的代码背后更深层次的逻辑。同时也能从其中学习到JDK的设计思想。
+    <!--PC版-->
 
-类定义12public class ArrayList&lt;E&gt; extends AbstractList&lt;E&gt;        implements List&lt...
-                </div>
-            </a>
-            <div class="abstract-post-meta">
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-href = Java>Java</a>
-    
-</div>
-                
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2018/07/17</span>
-                </div>
-            </div>
-        </article>
-    
-    <!-- paginator  -->
+    <!--PC版-->
+
+
     
 </main>
             <!-- profile -->
@@ -402,6 +272,13 @@ ArrayList 是我们最常用的一个集合类之一。了解它的实现，有�
 </footer>
     </div>
     <!-- toc -->
+    
+    <div class="toc-wrapper">
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        
+    </div>
     
     <div class="back-top">&#xe639;</div>
     <div class="sidebar">
