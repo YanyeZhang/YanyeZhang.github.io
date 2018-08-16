@@ -201,7 +201,7 @@
 <h3 id="基于寄存器"><a href="#基于寄存器" class="headerlink" title="基于寄存器"></a>基于寄存器</h3><p>接下来我们再看看基于寄存器的JVM。<br>一样的代码<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a = <span class="number">33</span></span><br><span class="line"><span class="keyword">int</span> b = <span class="number">44</span></span><br><span class="line"><span class="keyword">int</span> c = a + b</span><br></pre></td></tr></table></figure></p>
 <p>这次编译出来的指令是基于寄存器的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">add ax bx	//其中AX寄存器的值为33,BX寄存器的值为44，将结果放入AX</span><br></pre></td></tr></table></figure></p>
 <p>这里只产生了1条指令。当了解完基于栈的JVM之后，会很疑惑基于寄存器JVM的实现。</p>
-<p>这里我们直接看看他们的物理结构。</p>
+<p>这里我们直接看看他们的物理结构，有助于我们了解背后的实现：</p>
 <p><img src="/images/pasted-54.png" alt="upload successful"></p>
 <p>可以看到基于寄存器的JVM没有了操作数栈的概念，而局部量表中也不会直接存储数值，而是持有寄存器的地址。</p>
 <p>我们回头看看上面的指令，将ax，与bx两个寄存器上的值相加后将结果储存在ax。因为没有了操作数栈的概念，只需要直接对寄存器地址进行操作。</p>
@@ -340,6 +340,8 @@
     <div class="sidebar-content sidebar-content-show-archive">
           <div class="sidebar-archive">
     <!-- 在ejs中将archive按照时间排序 -->
+    
+    
     
     
     
