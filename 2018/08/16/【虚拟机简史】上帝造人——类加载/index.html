@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
     <title>
         
-        【虚拟机简史】生命的起源—类加载 · 走川博客
+        【虚拟机简史】生命的起源—类加载机制 · 走川博客
         
     </title>
     <link rel="icon" href= /assests/favicon.ico>
@@ -73,7 +73,7 @@
                 <a href="/" >YY&#39;s Studio.</a>
             </div>
             <div class="post-title">
-                <a href="#" class="post-name">【虚拟机简史】生命的起源—类加载</a>
+                <a href="#" class="post-name">【虚拟机简史】生命的起源—类加载机制</a>
             </div>
     </div>
     
@@ -94,7 +94,7 @@
         <h1 class="intro-title">
             <!-- 主页  -->
             
-            【虚拟机简史】生命的起源—类加载
+            【虚拟机简史】生命的起源—类加载机制
             <!-- 404 -->
             
         </h1>
@@ -189,7 +189,79 @@
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <script src="/assets/js/APlayer.min.js"> </script>
+        <script src="/assets/js/APlayer.min.js"> </script><h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>DNA是生命的背后基石，支持着生命的基本构造和性能。储存着生命的种族、血型、孕育、生长、凋亡等过程的全部信息。<br><img src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1534831765317&amp;di=2bfa5c65e9a67675730a6255a440fe0e&amp;imgtype=0&amp;src=http%3A%2F%2Fwww.ah.chinanews.com.cn%2F2017%2F0215%2FU478P946DT20170215155351.jpg" alt=""></p>
+<p>同样的在JVM中，Class文件储存着对象的类型、字段、方法、可见性，GC操作等过程的全部信息。</p>
+<p>在日常的开发中。我们接触最多的操作就是实例化对象，那么对象在JVM中是怎么产生的呢？本篇承接上文<a href="https://yanyezhang.github.io/2018/08/13/%E3%80%90Java%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%AE%80%E5%8F%B2%E3%80%91%E4%B8%96%E7%95%8C%E7%9A%84%E8%B5%B7%E6%BA%90/" target="_blank" rel="noopener">Class文件</a>,将分析一下类的加载机制。</p>
+<p>为了更好的理解，我们按照黄金思维法则来学习:</p>
+<ul>
+<li>What: 类加载机制是什么？</li>
+<li>Why: 为什么会有类加载机制？</li>
+<li>How: 类是怎么被加载的？</li>
+<li>When: 类加载发生在什么时候？</li>
+</ul>
+<h3 id="什么是类加载"><a href="#什么是类加载" class="headerlink" title="什么是类加载"></a>什么是类加载</h3><blockquote>
+<p>将类的数据从Class文件加载到内存，并对数据进行校验、转换解析和初始化，最终形成可以被虚拟机直接使用的Java类型。这就是虚拟机的类加载机制。 —— 周志明《深入理解Java虚拟机》 </p>
+</blockquote>
+<p>简单点就是，<strong>Class文件加载到可以被JVM使用的过程</strong>就是类加载。</p>
+<p><img src="http://clubimg.lenovo.com.cn/pic/4223795678672/0" alt=""></p>
+<h3 id="为什么会有类加载机制"><a href="#为什么会有类加载机制" class="headerlink" title="为什么会有类加载机制"></a>为什么会有类加载机制</h3><p>首先Java在编译期间不会与物理层做交互，因此需要在运行期间将Class文件动态加载到内存中（包括内存地址等都是在运行期才得以确定的）。</p>
+<p>这样的优点就是增加运行期间灵活，即可以动态加载Class文件。缺点是增加了类加载到内存的时间，因为期间需要做校验、解析等耗时的工作。</p>
+<h3 id="类是怎么被加载的？"><a href="#类是怎么被加载的？" class="headerlink" title="类是怎么被加载的？"></a>类是怎么被加载的？</h3><p>这部分将是本篇的重点，将会重点描述。</p>
+<p>首先，我们回想一个class文件的本质——二进制字节码。首先需要被加载的就是这些二进制字节码。这些都将被类加载器处理，最后形成JVM可以使用Java类型。因此类加载倒内存的的入口就是类加载器</p>
+<h4 id="类加载器（ClassLoader）"><a href="#类加载器（ClassLoader）" class="headerlink" title="类加载器（ClassLoader）"></a>类加载器（ClassLoader）</h4><p>类加载器是Java流行的原因之一，因为它不全在JVM中，而是将能力暴露出给开发者，让其自行决定所需的类。因此可以在运行时，实现动态加载Class。了解类加载器，我们先要了解它的几个重要组成：加载方式和双亲委派结构。</p>
+<p><img src="/images/pasted-57.png" alt="upload successful"></p>
+<h5 id="加载方式："><a href="#加载方式：" class="headerlink" title="加载方式："></a>加载方式：</h5><p>首先，类加载器需要找到指定的类。JVM将在当前ClassPath下，通过类的全限定名来找到指定的类。比如String的全限定名是java.lang.String，在本地中的路径结构则是java\lang\String。类加载器则会通过这个路径来确定唯一类。</p>
+<h5 id="双亲委派结构"><a href="#双亲委派结构" class="headerlink" title="双亲委派结构"></a>双亲委派结构</h5><p>JVM存在两种类加载器，虚拟机内部由C++实现的Bootstrap加载器，与虚拟机外部由Java实现的Extension加载器和Application加载器。</p>
+<p>接下来，我们分别了解一下它们。</p>
+<ol>
+<li>Bootstrap ClassLoader：<br>引导类加载器，负责加载 <java_home>\lib目录中的指定的Class文件（终于知道我们<a href="https://www.cnblogs.com/smyhvae/p/3788534.html" target="_blank" rel="noopener">设置环境变量</a>的原因了）。我们打开目录来看看到底有哪些文件可以被加载。</java_home></li>
+</ol>
+<p><img src="/images/pasted-58.png" alt="upload successful"></p>
+<p>上图中所有以jar结尾的文件都可以在Bootstrap ClassLoader加载。比如rt.jar文件中，就包含着日常开发最常用的几个包。</p>
+<p>以下为JD-GUI反编译结果</p>
+<p><img src="/images/pasted-59.png" alt="upload successful"></p>
+<ol>
+<li>Extension ClassLoader：</li>
+</ol>
+<p>扩展类加载器，负责加载&lt;\JAVA_HOME&gt;\lib\ext目录下的文件，开发者也可以自定义指定需要加载的文件目录。</p>
+<ol>
+<li>Application ClassLoader：</li>
+</ol>
+<p>应用加载器，这个ClassLoader是开发者直接使用的类加载器，如果应用程序中没有自定义过自己的类加载器，这个就是默认的类加载。其次，这个类是ClassLoader中getSystemClassLoaderde方法的返回值。（不过在Android中被改成了PathClassLoader）</p>
+<p><img src="/images/pasted-60.png" alt="upload successful"></p>
+<p>以上的三种ClassLoader最后会相互配合进行加载的，它们三者运作的模型就被称作双亲加载</p>
+<p><img src="/images/pasted-61.png" alt="upload successful"></p>
+<p>一般说道双亲加载模型的时候，就会有三个关键字</p>
+<p>那么应如何理解这个模型呢？</p>
+<p>从网上找到一段这样的描述，我觉得很容易理解</p>
+<ol>
+<li><p>当Application ClassLoader 收到一个类加载请求时，他首先不会自己去尝试加载这个类，而是将这个请求委派给父类加载器Extension ClassLoader去完成。  </p>
+</li>
+<li><p>当Extension ClassLoader收到一个类加载请求时，他首先也不会自己去尝试加载这个类，而是将请求委派给父类加载器Bootstrap ClassLoader去完成。  </p>
+</li>
+<li><p>如果Bootstrap ClassLoader加载失败(在&lt;\JAVA_HOME&gt;\lib中未找到所需类)，就会让Extension ClassLoader尝试加载。  </p>
+</li>
+<li><p>如果Extension ClassLoader也加载失败，就会使用Application ClassLoader加载。  </p>
+</li>
+<li><p>如果Application ClassLoader也加载失败，就会使用自定义加载器去尝试加载。  </p>
+</li>
+<li><p>如果均加载失败，就会抛出ClassNotFoundException异常。</p>
+</li>
+</ol>
+<p><img src="/images/pasted-62.png" alt="upload successful"></p>
+<p>要更好的理解这个模型可以想象一个是一个等级森严的猴群，猴子们捡到桃子需要一层层进贡。如果猴王（BootStrap ClassLoader）不吃了，才一层层交给下面的猴子解决。</p>
+<p>那这样的好处是什么呢？</p>
+<ol>
+<li>分层清晰，职责不同更容于扩展</li>
+<li>确保同一个类不会被加载多次，保证了运行的稳定性。</li>
+</ol>
+<p>在Android中类加载器分别为</p>
+<ol>
+<li>BootClassLoader：等效于BootStrap ClassLoader，负责预先加载类库</li>
+<li>PathClassLoader：负责加载系统类和应用程序的类</li>
+<li>DexClassLoader：负责加载dex文件以及包含dex的apk文件或jar文件，也支持从SD卡进行加载。热修复和插件化的ClassLoader。</li>
+</ol>
+<h4 id="加载周期"><a href="#加载周期" class="headerlink" title="加载周期"></a>加载周期</h4>
     </article>
     <!-- 前后页  -->
     <ul class="post-pager">
@@ -214,7 +286,7 @@
 <script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
 <script>
     var gitment = new Gitment({
-        id: "【虚拟机简史】生命的起源—类加载", // 可选。默认为 location.href
+        id: "【虚拟机简史】生命的起源—类加载机制", // 可选。默认为 location.href
         owner: 'YanyeZhang',
         repo: 'YanyeZhang.github.io',
         oauth: {
@@ -277,7 +349,7 @@
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text"><a href="#&#x524D;&#x8A00;" class="headerlink" title="&#x524D;&#x8A00;"></a>&#x524D;&#x8A00;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#什么是类加载"><span class="toc-number">2.</span> <span class="toc-text"><a href="#&#x4EC0;&#x4E48;&#x662F;&#x7C7B;&#x52A0;&#x8F7D;" class="headerlink" title="&#x4EC0;&#x4E48;&#x662F;&#x7C7B;&#x52A0;&#x8F7D;"></a>&#x4EC0;&#x4E48;&#x662F;&#x7C7B;&#x52A0;&#x8F7D;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#为什么会有类加载机制"><span class="toc-number">3.</span> <span class="toc-text"><a href="#&#x4E3A;&#x4EC0;&#x4E48;&#x4F1A;&#x6709;&#x7C7B;&#x52A0;&#x8F7D;&#x673A;&#x5236;" class="headerlink" title="&#x4E3A;&#x4EC0;&#x4E48;&#x4F1A;&#x6709;&#x7C7B;&#x52A0;&#x8F7D;&#x673A;&#x5236;"></a>&#x4E3A;&#x4EC0;&#x4E48;&#x4F1A;&#x6709;&#x7C7B;&#x52A0;&#x8F7D;&#x673A;&#x5236;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#类是怎么被加载的？"><span class="toc-number">4.</span> <span class="toc-text"><a href="#&#x7C7B;&#x662F;&#x600E;&#x4E48;&#x88AB;&#x52A0;&#x8F7D;&#x7684;&#xFF1F;" class="headerlink" title="&#x7C7B;&#x662F;&#x600E;&#x4E48;&#x88AB;&#x52A0;&#x8F7D;&#x7684;&#xFF1F;"></a>&#x7C7B;&#x662F;&#x600E;&#x4E48;&#x88AB;&#x52A0;&#x8F7D;&#x7684;&#xFF1F;</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#类加载器（ClassLoader）"><span class="toc-number">4.1.</span> <span class="toc-text"><a href="#&#x7C7B;&#x52A0;&#x8F7D;&#x5668;&#xFF08;ClassLoader&#xFF09;" class="headerlink" title="&#x7C7B;&#x52A0;&#x8F7D;&#x5668;&#xFF08;ClassLoader&#xFF09;"></a>&#x7C7B;&#x52A0;&#x8F7D;&#x5668;&#xFF08;ClassLoader&#xFF09;</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#加载方式："><span class="toc-number">4.1.1.</span> <span class="toc-text"><a href="#&#x52A0;&#x8F7D;&#x65B9;&#x5F0F;&#xFF1A;" class="headerlink" title="&#x52A0;&#x8F7D;&#x65B9;&#x5F0F;&#xFF1A;"></a>&#x52A0;&#x8F7D;&#x65B9;&#x5F0F;&#xFF1A;</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#双亲委派结构"><span class="toc-number">4.1.2.</span> <span class="toc-text"><a href="#&#x53CC;&#x4EB2;&#x59D4;&#x6D3E;&#x7ED3;&#x6784;" class="headerlink" title="&#x53CC;&#x4EB2;&#x59D4;&#x6D3E;&#x7ED3;&#x6784;"></a>&#x53CC;&#x4EB2;&#x59D4;&#x6D3E;&#x7ED3;&#x6784;</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#加载周期"><span class="toc-number">4.2.</span> <span class="toc-text"><a href="#&#x52A0;&#x8F7D;&#x5468;&#x671F;" class="headerlink" title="&#x52A0;&#x8F7D;&#x5468;&#x671F;"></a>&#x52A0;&#x8F7D;&#x5468;&#x671F;</span></a></li></ol></li></ol>
     </div>
     
     <div class="back-top">&#xe639;</div>
@@ -404,10 +476,6 @@
     
     
     
-    
-    
-    
-    
     <div class="total-archive"> Total : 9 </div>
     
     <div class="post-archive">
@@ -420,7 +488,7 @@
     
     
         <li class="archive-post-item">
-            <span class="archive-post-date">08/16</span><a class="archive-post-title" href= "/2018/08/16/【虚拟机简史】上帝造人——类加载/" >【虚拟机简史】生命的起源—类加载</a>
+            <span class="archive-post-date">08/16</span><a class="archive-post-title" href= "/2018/08/16/【虚拟机简史】上帝造人——类加载/" >【虚拟机简史】生命的起源—类加载机制</a>
         </li>
     
     
