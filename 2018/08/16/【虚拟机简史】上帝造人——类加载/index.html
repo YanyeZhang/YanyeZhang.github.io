@@ -206,28 +206,29 @@
 <p><img src="http://clubimg.lenovo.com.cn/pic/4223795678672/0" alt=""></p>
 <h3 id="为什么会有类加载机制"><a href="#为什么会有类加载机制" class="headerlink" title="为什么会有类加载机制"></a>为什么会有类加载机制</h3><p>首先Java在编译期间不会与物理层做交互，因此需要在运行期间将Class文件动态加载到内存中（包括内存地址等都是在运行期才得以确定的）。</p>
 <p>这样的优点就是增加运行期间灵活，即可以动态加载Class文件。缺点是增加了类加载到内存的时间，因为期间需要做校验、解析等耗时的工作。</p>
-<h3 id="类是怎么被加载的？"><a href="#类是怎么被加载的？" class="headerlink" title="类是怎么被加载的？"></a>类是怎么被加载的？</h3><p>这部分将是本篇的重点，将会重点描述。</p>
+<h3 id="类是怎么被加载的？"><a href="#类是怎么被加载的？" class="headerlink" title="类是怎么被加载的？"></a>类是怎么被加载的？</h3><p>这部分将是本篇的重点，将会重点描述。将重点阐述以下内容</p>
+<p><img src="/images/pasted-67.png" alt="upload successful"></p>
 <p>首先，我们回想一个class文件的本质——二进制字节码。首先需要被加载的就是这些二进制字节码。这些都将被类加载器处理，最后形成JVM可以使用Java类型。因此类加载倒内存的的入口就是类加载器</p>
 <h4 id="类加载器（ClassLoader）"><a href="#类加载器（ClassLoader）" class="headerlink" title="类加载器（ClassLoader）"></a>类加载器（ClassLoader）</h4><p>类加载器是Java流行的原因之一，因为它不全在JVM中，而是将能力暴露出给开发者，让其自行决定所需的类。因此可以在运行时，实现动态加载Class。了解类加载器，我们先要了解它的几个重要组成：加载方式和双亲委派结构。</p>
 <p><img src="/images/pasted-57.png" alt="upload successful"></p>
 <h5 id="加载方式："><a href="#加载方式：" class="headerlink" title="加载方式："></a>加载方式：</h5><p>首先，类加载器需要找到指定的类。JVM将在当前ClassPath下，通过类的全限定名来找到指定的类。比如String的全限定名是java.lang.String，在本地中的路径结构则是java\lang\String。类加载器则会通过这个路径来确定唯一类。</p>
 <h5 id="双亲委派结构"><a href="#双亲委派结构" class="headerlink" title="双亲委派结构"></a>双亲委派结构</h5><p>JVM存在两种类加载器，虚拟机内部由C++实现的Bootstrap加载器，与虚拟机外部由Java实现的Extension加载器和Application加载器。</p>
 <p>接下来，我们分别了解一下它们。</p>
-<ol>
+<ul>
 <li>Bootstrap ClassLoader：<br>引导类加载器，负责加载 <java_home>\lib目录中的指定的Class文件（终于知道我们<a href="https://www.cnblogs.com/smyhvae/p/3788534.html" target="_blank" rel="noopener">设置环境变量</a>的原因了）。我们打开目录来看看到底有哪些文件可以被加载。</java_home></li>
-</ol>
+</ul>
 <p><img src="/images/pasted-58.png" alt="upload successful"></p>
 <p>上图中所有以jar结尾的文件都可以在Bootstrap ClassLoader加载。比如rt.jar文件中，就包含着日常开发最常用的几个包。</p>
 <p>以下为JD-GUI反编译结果</p>
 <p><img src="/images/pasted-59.png" alt="upload successful"></p>
-<ol>
+<ul>
 <li>Extension ClassLoader：</li>
-</ol>
+</ul>
 <p>扩展类加载器，负责加载&lt;\JAVA_HOME&gt;\lib\ext目录下的文件，开发者也可以自定义指定需要加载的文件目录。</p>
-<ol>
+<ul>
 <li>Application ClassLoader：</li>
-</ol>
-<p>应用加载器，这个ClassLoader是开发者直接使用的类加载器，如果应用程序中没有自定义过自己的类加载器，这个就是默认的类加载。其次，这个类是ClassLoader中getSystemClassLoaderde方法的返回值。（不过在Android中被改成了PathClassLoader）</p>
+</ul>
+<p>应用加载器，这个ClassLoader是开发者直接使用的类加载器，如果应用程序中没有自定义过自己的类加载器，这个就是默认的类加载。其次，这个类是ClassLoader中getSystemClassLoaderde方法的返回值。（不过在Android中被改成了PathClassLoader）。自定义的ClassLoader的父加载器也都是来自于这个类</p>
 <p><img src="/images/pasted-60.png" alt="upload successful"></p>
 <p>以上的三种ClassLoader最后会相互配合进行加载的，它们三者运作的模型就被称作双亲加载</p>
 <p><img src="/images/pasted-61.png" alt="upload successful"></p>
@@ -249,19 +250,84 @@
 </li>
 </ol>
 <p><img src="/images/pasted-62.png" alt="upload successful"></p>
-<p>要更好的理解这个模型可以想象一个是一个等级森严的猴群，猴子们捡到桃子需要一层层进贡。如果猴王（BootStrap ClassLoader）不吃了，才一层层交给下面的猴子解决。</p>
+<p>要更好的理解这个模型可以想象 “尊老的家庭”</p>
+<blockquote>
+<p>儿子们买了吃的想给自己的爸爸，爸爸也是个孝子，马上就转手给了爷爷（BootStrap ClassLoader）。爷爷如果吃不下，就还给爸爸。爸爸要是也刚好不饿再还给儿子。</p>
+</blockquote>
 <p>那这样的好处是什么呢？</p>
 <ol>
 <li>分层清晰，职责不同更容于扩展</li>
-<li>确保同一个类不会被加载多次，保证了运行的稳定性。</li>
+<li>确保同一个类不会被加载多次，确保了类的唯一性，保证了运行的稳定性。</li>
 </ol>
-<p>在Android中类加载器分别为</p>
+<blockquote>
+<p>一个类需要与ClassLoader一起确定唯一性。对于不存在双亲关系的ClassLoder来说，两者加载的同一个Class文件，创建的类是不同的。</p>
+</blockquote>
+<p>这里再补充Android的类加载器，这部分是与Java不同的。因为Android加载的文件结构是Dex文件，与Java的Class文件结构不一样，因此需要自定义类加载器。和上面的结构类似，Dalivk也有三个类加载器。不同的是在Android中ClassLoader都是由Java实现的。</p>
+<p><img src="/images/pasted-64.png" alt="upload successful"></p>
 <ol>
 <li>BootClassLoader：等效于BootStrap ClassLoader，负责预先加载类库</li>
 <li>PathClassLoader：负责加载系统类和应用程序的类</li>
-<li>DexClassLoader：负责加载dex文件以及包含dex的apk文件或jar文件，也支持从SD卡进行加载。热修复和插件化的ClassLoader。</li>
+<li>DexClassLoader：负责加载dex文件以及包含dex的apk文件或jar文件，也支持从SD卡进行加载。常见作用在热修复和插件化。</li>
 </ol>
-<h4 id="加载周期"><a href="#加载周期" class="headerlink" title="加载周期"></a>加载周期</h4>
+<h4 id="类的生命周期"><a href="#类的生命周期" class="headerlink" title="类的生命周期"></a>类的生命周期</h4><p>类的生命周期一共为7个阶段:</p>
+<ol>
+<li>加载</li>
+<li>验证</li>
+<li>准备</li>
+<li>解析</li>
+<li>初始化</li>
+<li>使用</li>
+<li>卸载</li>
+</ol>
+<p>其中 2~4 又被统称为连接阶段。这七个部分并不是严格意义上的串行执行，比如加载与链接就是并行关系。这里我会将前面5步，6和7不是我们需要了解的重点。</p>
+<h5 id="加载阶段"><a href="#加载阶段" class="headerlink" title="加载阶段"></a>加载阶段</h5><p>加载阶段主要做了三件事：</p>
+<ol>
+<li>通过类的全限定名来获取此类的二进制字节码</li>
+<li>将这个字节码所代表的静态存储结构转化为方法区的运行时数据结构</li>
+<li>在内存中生成一个代表这个类的Class对象，作为对这个类的各种数据的访问入口，这个Class对象有可能放在方法区</li>
+</ol>
+<p>这里要补充一下，数组类是不通过类加载器创建的，它是由虚拟机直接创建。但里面的Type是由类加载器创建。</p>
+<p>这里就解答了我们的第最后一个问题，类是什么时候被加载的。</p>
+<h5 id="验证阶段"><a href="#验证阶段" class="headerlink" title="验证阶段"></a>验证阶段</h5><p>在加载过程中，还会同步进行验证的步骤。主要分为4步验证</p>
+<ol>
+<li>文件格式验证：这部分是对Class文件格式进行校验。如magic数、JVM版本号、不被的解析信息等。</li>
+<li>元数据验证：对字节码描述的信息进行语义分析,保证字节码符合Java规范。如是否有父类，是否实现了父类的抽象方法等。</li>
+<li>字节码验证：校验方法的字节码的逻辑性，合法性。如int值用long类型来存等类型错误问题，return指令错误。这部分操作很耗时，为了节约检验时间，后续编译器通过StackMapTable保存验证信息来节约验证推导时间。</li>
+<li>符号引用验证：校验常量池中的符号引用是否正确。如常量池中的全限定名是否能找到对应类（发生在解析阶段）</li>
+</ol>
+<h5 id="准备阶段"><a href="#准备阶段" class="headerlink" title="准备阶段"></a>准备阶段</h5><p>准备阶段是正式为静态变量分配内存，并设置静态变量的初始值阶段。<br>如以下代码<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> <span class="keyword">int</span> value = <span class="number">1</span></span><br></pre></td></tr></table></figure></p>
+<p>在准备阶段会为value分配内存空间，不过初始值是0。将value设置为1的指令在&lt;\cinit&gt;中，只有在初始化才会被执行。</p>
+<p>但是如果代码为<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> <span class="keyword">static</span> <span class="keyword">int</span> value = <span class="number">1</span></span><br></pre></td></tr></table></figure></p>
+<p>这样value的值在字段表中的ConstantValue中，这时候准备阶段就会将其值设置为1。</p>
+<h5 id="解析阶段"><a href="#解析阶段" class="headerlink" title="解析阶段"></a>解析阶段</h5><p>这一部分内容，和之前Class文件息息相关。这个步骤解析的到底是啥呢？符号引用！这一步将会把符号引用改为直接引用。</p>
+<p>我们先看看以下代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Demo</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span> </span>&#123;</span><br><span class="line">        HelloWorld helloWorld = <span class="keyword">new</span> HelloWorld();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>编译完之后，反编译class文件，可以看到main方法的指令如下</p>
+<p><img src="/images/pasted-65.png" alt="upload successful"></p>
+<p>new的指令会 映射到常量池#2的字面量 com/yanis/sample/HelloWorld 。</p>
+<p>在解析的过程会将对字面量的引用转化为对HelloWorld类数据区真实地址的指针，即直接引用。如果这时候HelloWorld类不在内存中，则会加载HelloWorld类。</p>
+<p><img src="/images/pasted-66.png" alt="upload successful"></p>
+<p>不仅仅是针对引用类，字段表、方法表也会在这时候转化为直接引用。流程是先从自身开始，按继承关系从下往上寻找所需的字段/方法。内容相似，这里不做展开。</p>
+<h5 id="初始化阶段"><a href="#初始化阶段" class="headerlink" title="初始化阶段"></a>初始化阶段</h5><p>类的初始化，是整个流程的最后一步。这一阶段只会执行一个方法 &lt;\cinit&gt;。 这个方法可以理解成为是当前类所有静态类的一个集合，比如以下代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span></span>&#123;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> i= <span class="number">1</span></span><br><span class="line">    <span class="keyword">static</span>&#123;</span><br><span class="line">    	System.out.print(i);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以上的对i的赋值，与打印i都将会合并在 &lt;\cinit&gt;方法中。初始化阶段会自定执行该方法。如果父类也有&lt;\cinit&gt;则，JVM一定会先保证父类的 &lt;\cinit&gt;先被执行。一般情况下，这个方法有且只会被调用一次。</p>
+<h3 id="类是什么时候被加载的"><a href="#类是什么时候被加载的" class="headerlink" title="类是什么时候被加载的"></a>类是什么时候被加载的</h3><p>JVM中没有规定什么时候需要对类进行加载、验证、准备具体发生的时机（可以是JVM一启动或者是按需加载）。但是规定了什么时候需要初始化。因此只要触发了初始化，说明前面的三步一定要完成。</p>
+<ol>
+<li>遇到 new、get/put static 或  invoke static等指令时候；</li>
+<li>使用反射对类进行调用的时候，如果类没有初始化，也会对其进行初始化；</li>
+<li>当初始化一个类的时候，如果父类还没有执行，就先要执行父类的初始化；</li>
+<li>当虚拟机启动时，用户指定一个含main的方法的类，虚拟机会先初始化这个类；</li>
+<li>在JDK1.7的时候，如果一个MethodHandle解析后的结果为REF_getStatic、REF_putStatic、REF_invkeStatic的时候，如果这个类没有初始化过，要先对其先初始化</li>
+</ol>
+<p>以上没有说到解析阶段，解析阶段规定了在涉及常量池指令前触发就好了，时机可以在类加载的第一时间也可以在第一次调用该指令前。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>类加载可以说它是整个JVM世界生命的起源。经过了这个步骤才能在JVM中就可以正式的引用类。</p>
+<p>在类加载机制中，重点在于加载过程中的5个阶段和双亲加载。我们只需要记住一个核心价值观，就可以很抽象地记忆里面的核心规律：</p>
+<blockquote>
+<p> 所有的事情，都先先和爸爸打声招呼。</p>
+</blockquote>
+<p><img src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1534937240099&amp;di=8def06956236b985f5e1e67500e086c7&amp;imgtype=0&amp;src=http%3A%2F%2Fimg.bqatj.com%2Fimg%2Fc7425af9ae985197.jpg" alt=""></p>
+<p>比如，类加载器双亲加载的模型、加载阶段子类，同时父类也要被加载等，都是需要先涉及相关的上一个元素，再确定自身的。</p>
+
     </article>
     <!-- 前后页  -->
     <ul class="post-pager">
@@ -349,7 +415,7 @@
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text"><a href="#&#x524D;&#x8A00;" class="headerlink" title="&#x524D;&#x8A00;"></a>&#x524D;&#x8A00;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#什么是类加载"><span class="toc-number">2.</span> <span class="toc-text"><a href="#&#x4EC0;&#x4E48;&#x662F;&#x7C7B;&#x52A0;&#x8F7D;" class="headerlink" title="&#x4EC0;&#x4E48;&#x662F;&#x7C7B;&#x52A0;&#x8F7D;"></a>&#x4EC0;&#x4E48;&#x662F;&#x7C7B;&#x52A0;&#x8F7D;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#为什么会有类加载机制"><span class="toc-number">3.</span> <span class="toc-text"><a href="#&#x4E3A;&#x4EC0;&#x4E48;&#x4F1A;&#x6709;&#x7C7B;&#x52A0;&#x8F7D;&#x673A;&#x5236;" class="headerlink" title="&#x4E3A;&#x4EC0;&#x4E48;&#x4F1A;&#x6709;&#x7C7B;&#x52A0;&#x8F7D;&#x673A;&#x5236;"></a>&#x4E3A;&#x4EC0;&#x4E48;&#x4F1A;&#x6709;&#x7C7B;&#x52A0;&#x8F7D;&#x673A;&#x5236;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#类是怎么被加载的？"><span class="toc-number">4.</span> <span class="toc-text"><a href="#&#x7C7B;&#x662F;&#x600E;&#x4E48;&#x88AB;&#x52A0;&#x8F7D;&#x7684;&#xFF1F;" class="headerlink" title="&#x7C7B;&#x662F;&#x600E;&#x4E48;&#x88AB;&#x52A0;&#x8F7D;&#x7684;&#xFF1F;"></a>&#x7C7B;&#x662F;&#x600E;&#x4E48;&#x88AB;&#x52A0;&#x8F7D;&#x7684;&#xFF1F;</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#类加载器（ClassLoader）"><span class="toc-number">4.1.</span> <span class="toc-text"><a href="#&#x7C7B;&#x52A0;&#x8F7D;&#x5668;&#xFF08;ClassLoader&#xFF09;" class="headerlink" title="&#x7C7B;&#x52A0;&#x8F7D;&#x5668;&#xFF08;ClassLoader&#xFF09;"></a>&#x7C7B;&#x52A0;&#x8F7D;&#x5668;&#xFF08;ClassLoader&#xFF09;</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#加载方式："><span class="toc-number">4.1.1.</span> <span class="toc-text"><a href="#&#x52A0;&#x8F7D;&#x65B9;&#x5F0F;&#xFF1A;" class="headerlink" title="&#x52A0;&#x8F7D;&#x65B9;&#x5F0F;&#xFF1A;"></a>&#x52A0;&#x8F7D;&#x65B9;&#x5F0F;&#xFF1A;</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#双亲委派结构"><span class="toc-number">4.1.2.</span> <span class="toc-text"><a href="#&#x53CC;&#x4EB2;&#x59D4;&#x6D3E;&#x7ED3;&#x6784;" class="headerlink" title="&#x53CC;&#x4EB2;&#x59D4;&#x6D3E;&#x7ED3;&#x6784;"></a>&#x53CC;&#x4EB2;&#x59D4;&#x6D3E;&#x7ED3;&#x6784;</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#加载周期"><span class="toc-number">4.2.</span> <span class="toc-text"><a href="#&#x52A0;&#x8F7D;&#x5468;&#x671F;" class="headerlink" title="&#x52A0;&#x8F7D;&#x5468;&#x671F;"></a>&#x52A0;&#x8F7D;&#x5468;&#x671F;</span></a></li></ol></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#前言"><span class="toc-number">1.</span> <span class="toc-text"><a href="#&#x524D;&#x8A00;" class="headerlink" title="&#x524D;&#x8A00;"></a>&#x524D;&#x8A00;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#什么是类加载"><span class="toc-number">2.</span> <span class="toc-text"><a href="#&#x4EC0;&#x4E48;&#x662F;&#x7C7B;&#x52A0;&#x8F7D;" class="headerlink" title="&#x4EC0;&#x4E48;&#x662F;&#x7C7B;&#x52A0;&#x8F7D;"></a>&#x4EC0;&#x4E48;&#x662F;&#x7C7B;&#x52A0;&#x8F7D;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#为什么会有类加载机制"><span class="toc-number">3.</span> <span class="toc-text"><a href="#&#x4E3A;&#x4EC0;&#x4E48;&#x4F1A;&#x6709;&#x7C7B;&#x52A0;&#x8F7D;&#x673A;&#x5236;" class="headerlink" title="&#x4E3A;&#x4EC0;&#x4E48;&#x4F1A;&#x6709;&#x7C7B;&#x52A0;&#x8F7D;&#x673A;&#x5236;"></a>&#x4E3A;&#x4EC0;&#x4E48;&#x4F1A;&#x6709;&#x7C7B;&#x52A0;&#x8F7D;&#x673A;&#x5236;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#类是怎么被加载的？"><span class="toc-number">4.</span> <span class="toc-text"><a href="#&#x7C7B;&#x662F;&#x600E;&#x4E48;&#x88AB;&#x52A0;&#x8F7D;&#x7684;&#xFF1F;" class="headerlink" title="&#x7C7B;&#x662F;&#x600E;&#x4E48;&#x88AB;&#x52A0;&#x8F7D;&#x7684;&#xFF1F;"></a>&#x7C7B;&#x662F;&#x600E;&#x4E48;&#x88AB;&#x52A0;&#x8F7D;&#x7684;&#xFF1F;</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#类加载器（ClassLoader）"><span class="toc-number">4.1.</span> <span class="toc-text"><a href="#&#x7C7B;&#x52A0;&#x8F7D;&#x5668;&#xFF08;ClassLoader&#xFF09;" class="headerlink" title="&#x7C7B;&#x52A0;&#x8F7D;&#x5668;&#xFF08;ClassLoader&#xFF09;"></a>&#x7C7B;&#x52A0;&#x8F7D;&#x5668;&#xFF08;ClassLoader&#xFF09;</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#加载方式："><span class="toc-number">4.1.1.</span> <span class="toc-text"><a href="#&#x52A0;&#x8F7D;&#x65B9;&#x5F0F;&#xFF1A;" class="headerlink" title="&#x52A0;&#x8F7D;&#x65B9;&#x5F0F;&#xFF1A;"></a>&#x52A0;&#x8F7D;&#x65B9;&#x5F0F;&#xFF1A;</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#双亲委派结构"><span class="toc-number">4.1.2.</span> <span class="toc-text"><a href="#&#x53CC;&#x4EB2;&#x59D4;&#x6D3E;&#x7ED3;&#x6784;" class="headerlink" title="&#x53CC;&#x4EB2;&#x59D4;&#x6D3E;&#x7ED3;&#x6784;"></a>&#x53CC;&#x4EB2;&#x59D4;&#x6D3E;&#x7ED3;&#x6784;</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#类的生命周期"><span class="toc-number">4.2.</span> <span class="toc-text"><a href="#&#x7C7B;&#x7684;&#x751F;&#x547D;&#x5468;&#x671F;" class="headerlink" title="&#x7C7B;&#x7684;&#x751F;&#x547D;&#x5468;&#x671F;"></a>&#x7C7B;&#x7684;&#x751F;&#x547D;&#x5468;&#x671F;</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#加载阶段"><span class="toc-number">4.2.1.</span> <span class="toc-text"><a href="#&#x52A0;&#x8F7D;&#x9636;&#x6BB5;" class="headerlink" title="&#x52A0;&#x8F7D;&#x9636;&#x6BB5;"></a>&#x52A0;&#x8F7D;&#x9636;&#x6BB5;</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#验证阶段"><span class="toc-number">4.2.2.</span> <span class="toc-text"><a href="#&#x9A8C;&#x8BC1;&#x9636;&#x6BB5;" class="headerlink" title="&#x9A8C;&#x8BC1;&#x9636;&#x6BB5;"></a>&#x9A8C;&#x8BC1;&#x9636;&#x6BB5;</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#准备阶段"><span class="toc-number">4.2.3.</span> <span class="toc-text"><a href="#&#x51C6;&#x5907;&#x9636;&#x6BB5;" class="headerlink" title="&#x51C6;&#x5907;&#x9636;&#x6BB5;"></a>&#x51C6;&#x5907;&#x9636;&#x6BB5;</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#解析阶段"><span class="toc-number">4.2.4.</span> <span class="toc-text"><a href="#&#x89E3;&#x6790;&#x9636;&#x6BB5;" class="headerlink" title="&#x89E3;&#x6790;&#x9636;&#x6BB5;"></a>&#x89E3;&#x6790;&#x9636;&#x6BB5;</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#初始化阶段"><span class="toc-number">4.2.5.</span> <span class="toc-text"><a href="#&#x521D;&#x59CB;&#x5316;&#x9636;&#x6BB5;" class="headerlink" title="&#x521D;&#x59CB;&#x5316;&#x9636;&#x6BB5;"></a>&#x521D;&#x59CB;&#x5316;&#x9636;&#x6BB5;</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#类是什么时候被加载的"><span class="toc-number">5.</span> <span class="toc-text"><a href="#&#x7C7B;&#x662F;&#x4EC0;&#x4E48;&#x65F6;&#x5019;&#x88AB;&#x52A0;&#x8F7D;&#x7684;" class="headerlink" title="&#x7C7B;&#x662F;&#x4EC0;&#x4E48;&#x65F6;&#x5019;&#x88AB;&#x52A0;&#x8F7D;&#x7684;"></a>&#x7C7B;&#x662F;&#x4EC0;&#x4E48;&#x65F6;&#x5019;&#x88AB;&#x52A0;&#x8F7D;&#x7684;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#总结"><span class="toc-number">6.</span> <span class="toc-text"><a href="#&#x603B;&#x7ED3;" class="headerlink" title="&#x603B;&#x7ED3;"></a>&#x603B;&#x7ED3;</span></a></li></ol>
     </div>
     
     <div class="back-top">&#xe639;</div>
@@ -363,10 +429,6 @@
     <div class="sidebar-content sidebar-content-show-archive">
           <div class="sidebar-archive">
     <!-- 在ejs中将archive按照时间排序 -->
-    
-    
-    
-    
     
     
     
