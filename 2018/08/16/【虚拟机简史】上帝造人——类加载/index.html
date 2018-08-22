@@ -202,13 +202,13 @@
 <h3 id="什么是类加载"><a href="#什么是类加载" class="headerlink" title="什么是类加载"></a>什么是类加载</h3><blockquote>
 <p>将类的数据从Class文件加载到内存，并对数据进行校验、转换解析和初始化，最终形成可以被虚拟机直接使用的Java类型。这就是虚拟机的类加载机制。 —— 周志明《深入理解Java虚拟机》 </p>
 </blockquote>
-<p>简单点就是，<strong>Class文件加载到可以被JVM使用的过程</strong>就是类加载。</p>
+<p>简单点就是，<strong>Class文件开始加载到可以被JVM使用的过程</strong>就是类加载。</p>
 <p><img src="http://clubimg.lenovo.com.cn/pic/4223795678672/0" alt=""></p>
 <h3 id="为什么会有类加载机制"><a href="#为什么会有类加载机制" class="headerlink" title="为什么会有类加载机制"></a>为什么会有类加载机制</h3><p>首先Java在编译期间不会与物理层做交互，因此需要在运行期间将Class文件动态加载到内存中（包括内存地址等都是在运行期才得以确定的）。</p>
 <p>这样的优点就是增加运行期间灵活，即可以动态加载Class文件。缺点是增加了类加载到内存的时间，因为期间需要做校验、解析等耗时的工作。</p>
 <h3 id="类是怎么被加载的"><a href="#类是怎么被加载的" class="headerlink" title="类是怎么被加载的"></a>类是怎么被加载的</h3><p>这部分将是本篇的重点，将会重点描述。将重点阐述以下内容</p>
 <p><img src="/images/pasted-67.png" alt="upload successful"></p>
-<p>首先，我们回想一个class文件的本质——二进制字节码。首先需要被加载的就是这些二进制字节码。这些都将被类加载器处理，最后形成JVM可以使用Java类型。因此类加载倒内存的的入口就是类加载器</p>
+<p>首先，我们回想一个class文件的本质——二进制字节码。首先需要被加载的就是这些二进制字节码。这些都将被类加载器处理，最后形成JVM可以使用Java类型。因此类加载到内存的入口就是类加载器</p>
 <h4 id="类加载器（ClassLoader）"><a href="#类加载器（ClassLoader）" class="headerlink" title="类加载器（ClassLoader）"></a>类加载器（ClassLoader）</h4><p>类加载器是Java流行的原因之一，因为它不全在JVM中，而是将能力暴露出给开发者，让其自行决定所需的类。因此可以在运行时，实现动态加载Class。了解类加载器，我们先要了解它的几个重要组成：加载方式和双亲委派结构。</p>
 <p><img src="/images/pasted-57.png" alt="upload successful"></p>
 <h5 id="加载方式："><a href="#加载方式：" class="headerlink" title="加载方式："></a>加载方式：</h5><p>首先，类加载器需要找到指定的类。JVM将在当前ClassPath下，通过类的全限定名来找到指定的类。比如String的全限定名是java.lang.String，在本地中的路径结构则是java\lang\String。类加载器则会通过这个路径来确定唯一类。</p>
@@ -230,7 +230,7 @@
 </ul>
 <p>应用加载器，这个ClassLoader是开发者直接使用的类加载器，如果应用程序中没有自定义过自己的类加载器，这个就是默认的类加载。其次，这个类是ClassLoader中getSystemClassLoaderde方法的返回值。（不过在Android中被改成了PathClassLoader）。自定义的ClassLoader的父加载器也都是来自于这个类</p>
 <p><img src="/images/pasted-60.png" alt="upload successful"></p>
-<p>以上的三种ClassLoader最后会相互配合进行加载的，它们三者运作的模型就被称作双亲加载</p>
+<p>以上的三种ClassLoader最后会相互配合进行加载的，它们三者运作的模型就被称作双亲加载（这里利用的是委派而不是继承，在一定时候可以修改委派关系）</p>
 <p><img src="/images/pasted-61.png" alt="upload successful"></p>
 <p>一般说道双亲加载模型的时候，就会有三个关键字</p>
 <p>那么应如何理解这个模型呢？</p>
@@ -280,6 +280,7 @@
 <li>卸载</li>
 </ol>
 <p>其中 2~4 又被统称为连接阶段。这七个部分并不是严格意义上的串行执行，比如加载与链接就是并行关系。这里我会将前面5步，6和7不是我们需要了解的重点。</p>
+<p><img src="http://clubimg.lenovo.com.cn/pic/4215682711324/0" alt=""></p>
 <h5 id="加载阶段"><a href="#加载阶段" class="headerlink" title="加载阶段"></a>加载阶段</h5><p>加载阶段主要做了三件事：</p>
 <ol>
 <li>通过类的全限定名来获取此类的二进制字节码</li>
@@ -324,7 +325,7 @@
 <h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>类加载可以说它是整个JVM世界生命的起源。经过了这个步骤才能在JVM中就可以正式的引用类。</p>
 <p>在类加载机制中，重点在于加载过程中的5个阶段和双亲加载。我们只需要记住一个核心价值观，就可以很抽象地记忆里面的核心规律：</p>
 <blockquote>
-<p> 所有的事情，都先先和爸爸打声招呼。</p>
+<p> 所有的事情，都先和爸爸打声招呼。</p>
 </blockquote>
 <p><img src="https://timgsa.baidu.com/timg?image&amp;quality=80&amp;size=b9999_10000&amp;sec=1534937240099&amp;di=8def06956236b985f5e1e67500e086c7&amp;imgtype=0&amp;src=http%3A%2F%2Fimg.bqatj.com%2Fimg%2Fc7425af9ae985197.jpg" alt=""></p>
 <p>比如，类加载器双亲加载的模型、加载阶段子类，同时父类也要被加载等，都是需要先涉及相关的上一个元素，再确定自身的。</p>
@@ -437,10 +438,6 @@
     <div class="sidebar-content sidebar-content-show-archive">
           <div class="sidebar-archive">
     <!-- 在ejs中将archive按照时间排序 -->
-    
-    
-    
-    
     
     
     
