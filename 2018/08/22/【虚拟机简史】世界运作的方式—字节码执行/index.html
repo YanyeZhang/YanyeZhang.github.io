@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" >
     <title>
         
-        走川博客
+        【虚拟机简史】世界运作的方式—字节码执行 · 走川博客
         
     </title>
     <link rel="icon" href= /assests/favicon.ico>
@@ -60,11 +60,22 @@
     
 </head>
     
+        <body class="post-body">
+    
     
 <header class="header">
 
     <div class="header-sidebar-menu">&#xe775;</div>
     <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >YY&#39;s Studio.</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">【虚拟机简史】世界运作的方式—字节码执行</a>
+            </div>
+    </div>
     
     <a class="home-link" href=/>YY's Studio.</a>
 </header>
@@ -72,21 +83,37 @@
         <div class="site-intro">
     
     <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
             
-    <div class="site-intro-img" style="background-image: url(/)"></div>
+    <div class="site-intro-img" style="background-image: url(http://oumn0o088.bkt.clouddn.com/post-bg.jpg)"></div>
     <div class="site-intro-placeholder"></div>
     <div class="site-intro-meta">
         <!-- 标题  -->
         <h1 class="intro-title">
             <!-- 主页  -->
             
+            【虚拟机简史】世界运作的方式—字节码执行
+            <!-- 404 -->
+            
         </h1>
         <!-- 副标题 -->
         <p class="intro-subtitle">
             <!-- 主页副标题  -->
             
+            
+            <!-- 404 -->
+            
         </p>
         <!-- 文章页meta -->
+        
+            <!-- 文章页标签  -->
+            
+            <div class="post-intro-meta">
+                <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                <span class="post-intro-time">2018/08/22</span>
+            </div>
         
     </div>
 </div>
@@ -154,146 +181,50 @@
             }
         </script>
         <div class="container container-unloaded">
-            <main class="main index-page">
-    
-    
-    
-        <article class="index-post">
-            <a class="content-show-full" href = "/2018/08/22/【虚拟机简史】世界运作的方式—字节码执行/" >
-                    <h2 class="abstract-title">
-                        
-                        <span>【虚拟机简史】世界运作的方式—字节码执行</span>
-                    </h2>
-                <div class="abstract-content">
-                     
-                </div>
-            </a>
-            <div class="abstract-post-meta">
-                <!-- tags  -->
-                
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2018/08/22</span>
-                </div>
-            </div>
-        </article>
-    
-    
-    
-        <article class="index-post">
-            <a class="content-show-full" href = "/2018/08/16/【虚拟机简史】上帝造人——类加载/" >
-                    <h2 class="abstract-title">
-                        
-                        <span>【虚拟机简史】生命的起源—类加载机制</span>
-                    </h2>
-                <div class="abstract-content">
-                     前言DNA是生命的背后基石，支持着生命的基本构造和性能。储存着生命的种族、血型、孕育、生长、凋亡等过程的全部信息。
-同样的在JVM中，Class文件储存着对象的类型、字段、方法、可见性，GC操作等过程的全部信息。
-在日常的开发中。我们接触最多的操作就是实例化对象，那么对象在JVM中是怎么产生的呢？本篇承接上文Class文件,将分析一下类的加载机制。
-为了更好的理解，我们按照黄金思维法则来学...
-                </div>
-            </a>
-            <div class="abstract-post-meta">
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-href = 虚拟机>虚拟机</a>
-    
-</div>
-                
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2018/08/16</span>
-                </div>
-            </div>
-        </article>
-    
-    
-    
-        <article class="index-post">
-            <a class="content-show-full" href = "/2018/08/15/【Java虚拟机简史】基于栈虚拟机vs基于寄存器虚拟机/" >
-                    <h2 class="abstract-title">
-                        
-                        <span>【虚拟机简史】基于栈虚拟机vs基于寄存器虚拟机</span>
-                    </h2>
-                <div class="abstract-content">
-                     前言虚拟机的存在是为了隔绝物理层面上的差异，而在虚拟机中也存在多种执行方式。在介绍Class文件中，我们了解到JVM虚拟机指令执行是通过操作数栈，这样的虚拟机被认为是基于栈的，而Dalvik虚拟机中则是基于寄存器的，那基于栈与基于寄存器的虚拟机到底有什么区别？
-首先，我们要先了解栈和寄存器，栈是虚拟机在内存中划分出来的虚拟区域，属于栈帧的一部分。用作数据处理的区域，而寄存器则是一个真实的物...
-                </div>
-            </a>
-            <div class="abstract-post-meta">
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-href = 虚拟机>虚拟机</a>
-    
-</div>
-                
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2018/08/15</span>
-                </div>
-            </div>
-        </article>
-    
-    
-    
-        <article class="index-post">
-            <a class="content-show-full" href = "/2018/08/13/【Java虚拟机简史】世界的起源/" >
-                    <h2 class="abstract-title">
-                        
-                        <span>【虚拟机简史】万物的DNA—Class文件</span>
-                    </h2>
-                <div class="abstract-content">
-                     前言DNA是生命的背后基石，支持着生命的基本构造和性能。储存着生命的种族、血型、孕育、生长、凋亡等过程的全部信息。
-就如同在现实生活中每种生物都有自己的独特DNA一样，虚拟机世界中每个对象都拥有自己的DNA——Class文件。储存着对象的类型、字段、方法、可见性，GC等过程的全部信息。
+            <main class="main post-page">
+    <article class="article-entry">
+        <script src="/assets/js/APlayer.min.js"> </script>
+    </article>
+    <!-- 前后页  -->
+    <ul class="post-pager">
+        
+        
+            <li class="previous">
+                <a href= "/2018/08/16/【虚拟机简史】上帝造人——类加载/" title= 【虚拟机简史】生命的起源—类加载机制 >
+                    <span>Previous Post</span>
+                    <span>【虚拟机简史】生命的起源—类加载机制</span>
+                </a>
+            </li>
+        
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
 
-Class文件的由来在了解之前class文件之前，我们必须要明白为什么会有class文件。
-在C/C+...
-                </div>
-            </a>
-            <div class="abstract-post-meta">
-                <!-- tags  -->
-                
-                <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-href = 虚拟机>虚拟机</a>
-    
-</div>
-                
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2018/08/13</span>
-                </div>
-            </div>
-        </article>
+<!-- City版安装代码已完成 -->
     
     
-    
-        <article class="index-post">
-            <a class="content-show-full" href = "/2018/08/02/【Android-Jetpack】/" >
-                    <h2 class="abstract-title">
-                        
-                        <span>【Android Jetpack】ViewModel 源码分析</span>
-                    </h2>
-                <div class="abstract-content">
-                     
+<div id="container"></div>
+<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
+<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
+<script>
+    var gitment = new Gitment({
+        id: "【虚拟机简史】世界运作的方式—字节码执行", // 可选。默认为 location.href
+        owner: 'YanyeZhang',
+        repo: 'YanyeZhang.github.io',
+        oauth: {
+            client_id: 'dbaed912e5b7c0480a2f',
+            client_secret: 'f8eca7690f60152569c598b05df04fe885e17a4b',
+        },
+    })
+    gitment.render('container')
 
-                </div>
-            </a>
-            <div class="abstract-post-meta">
-                <!-- tags  -->
-                
-                <!-- date  -->
-                <div class="abstract-date">
-                    <span class="abstract-calander iconfont-archer"></span><span class="abstract-time">2018/08/02</span>
-                </div>
-            </div>
-        </article>
-    
-    <!-- paginator  -->
+</script>
+
+    <!--PC版-->
+
+    <!--PC版-->
+
+
     
 </main>
             <!-- profile -->
@@ -335,6 +266,13 @@ Class文件的由来在了解之前class文件之前，我们必须要明白为�
 </footer>
     </div>
     <!-- toc -->
+    
+    <div class="toc-wrapper">
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        
+    </div>
     
     <div class="back-top">&#xe639;</div>
     <div class="sidebar">

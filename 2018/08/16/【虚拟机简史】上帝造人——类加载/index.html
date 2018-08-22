@@ -311,7 +311,8 @@
 <h5 id="初始化阶段"><a href="#初始化阶段" class="headerlink" title="初始化阶段"></a>初始化阶段</h5><p>类的初始化，是整个流程的最后一步。这一阶段只会执行一个方法 &lt;\cinit&gt;。 这个方法可以理解成为是当前类所有静态类的一个集合，比如以下代码</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span></span>&#123;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> i= <span class="number">1</span></span><br><span class="line">    <span class="keyword">static</span>&#123;</span><br><span class="line">    	System.out.print(i);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>以上的对i的赋值，与打印i都将会合并在 &lt;\cinit&gt;方法中。初始化阶段会自定执行该方法。如果父类也有&lt;\cinit&gt;则，JVM一定会先保证父类的 &lt;\cinit&gt;先被执行。一般情况下，这个方法有且只会被调用一次。</p>
-<h3 id="类是什么时候被加载的"><a href="#类是什么时候被加载的" class="headerlink" title="类是什么时候被加载的"></a>类是什么时候被加载的</h3><p>JVM中没有规定什么时候需要对类进行加载、验证、准备具体发生的时机（可以是JVM一启动或者是按需加载）。但是规定了什么时候需要初始化。因此只要触发了初始化，说明前面的三步一定要完成。</p>
+<h3 id="类是什么时候被加载的"><a href="#类是什么时候被加载的" class="headerlink" title="类是什么时候被加载的"></a>类是什么时候被加载的</h3><p>那么什么时候会引发类加载机制呢？<br>JVM中没有规定什么时候需要对类进行加载、验证、准备具体发生的时机（可以是JVM一启动或者是按需加载）。因此可以在我想来，至少可以选择JVM开启的时候全部加载、或者是按需加载。</p>
+<p>但是JVM规定了什么时候需要初始化。因此只要触发了初始化，说明前面的加载、验证、准备阶段一定要完成。</p>
 <ol>
 <li>遇到 new、get/put static 或  invoke static等指令时候；</li>
 <li>使用反射对类进行调用的时候，如果类没有初始化，也会对其进行初始化；</li>
@@ -331,6 +332,13 @@
     </article>
     <!-- 前后页  -->
     <ul class="post-pager">
+        
+            <li class="next">
+                <a href= "/2018/08/22/【虚拟机简史】世界运作的方式—字节码执行/" title= 【虚拟机简史】世界运作的方式—字节码执行 >
+                    <span>Next Post</span>
+                    <span>【虚拟机简史】世界运作的方式—字节码执行</span>
+                </a>
+            </li>
         
         
             <li class="previous">
@@ -542,7 +550,28 @@
     
     
     
-    <div class="total-archive"> Total : 9 </div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-archive"> Total : 10 </div>
     
     <div class="post-archive">
     
@@ -551,6 +580,11 @@
     
     <div class="archive-year"> 2018 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/22</span><a class="archive-post-title" href= "/2018/08/22/【虚拟机简史】世界运作的方式—字节码执行/" >【虚拟机简史】世界运作的方式—字节码执行</a>
+        </li>
     
     
         <li class="archive-post-item">
